@@ -3,7 +3,7 @@
 This is the client for the chat application.
 
 ## Technologies Used
-- Nuxt.js
+- Vue.js v3
 - TypeScript
 
 ### Get Started

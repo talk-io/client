@@ -29,9 +29,9 @@
 </template>
 
 <script setup lang="ts">
-import {ErrorObject} from "@vuelidate/core";
+import type {ErrorObject} from "@vuelidate/core";
 
-const props = defineProps<{
+defineProps<{
   label: string;
   modelValue: string | null;
   placeholder?: string;

@@ -1,12 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./components/**/*.{js,vue,ts}",
-    "./layouts/**/*.vue",
-    "./pages/**/*.vue",
-    "./plugins/**/*.{js,ts}",
-    "./nuxt.config.{js,ts}",
-    "./app.vue",
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -15,7 +11,8 @@ module.exports = {
       },
       backgroundColor: {
         "card": "#36393f",
-        "input": "#202225"
+        "input": "#202225",
+        "primary": "#5A20CB",
       },
       borderColor: {
         "input": "#202225",
