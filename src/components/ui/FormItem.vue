@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-1 w-full">
     <span
-        class="text-sm font-semibold text-label uppercase text-gray-500"
+        class="text-sm font-semibold text-label uppercase"
         :class="{
           'text-red-500': errors?.length
         }"
@@ -9,12 +9,12 @@
       {{ label }}
     </span>
     <input
+        v-bind="$attrs"
         :value="modelValue"
-        :placeholder="placeholder"
         :class="{
         'border-red-500': errors?.length,
       }"
-        :type="type"
+        :type="htmlType"
         :name="name"
         class="border-[1px] border-card rounded-md p-2 bg-input w-full focus:outline-0"
         @input="$emit('update:modelValue', $event.target.value)"
@@ -34,9 +34,8 @@ import type {ErrorObject} from "@vuelidate/core";
 defineProps<{
   label: string;
   modelValue: string | null;
-  placeholder?: string;
   errors?: ErrorObject[];
-  type?: string;
+  htmlType?: string;
   name?: string;
 }>();
 

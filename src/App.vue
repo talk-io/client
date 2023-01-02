@@ -1,9 +1,9 @@
 <template>
-  <DefaultLayout>
+  <div class="w-full h-screen">
     <Suspense>
       <RouterView/>
     </Suspense>
-  </DefaultLayout>
+  </div>
 </template>
 
 <script setup lang="ts">

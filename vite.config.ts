@@ -11,13 +11,4 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  optimizeDeps: {
-    force: true,
-    include: ['@formkit/auto-animate'],
-},
-build: {
-  commonjsOptions: {
-    include: [/node_modules/],
-  },
-},
 })

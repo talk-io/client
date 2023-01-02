@@ -7,16 +7,18 @@
     </template>
     <form class="flex flex-col gap-5 w-full">
       <FormItem
-          v-model="model.email"
+          v-model="record.email"
           type="email"
           label="Email"
           :errors="v$.email.$errors"
+          :disabled="loading"
       />
       <FormItem
-          v-model="model.password"
+          v-model="record.password"
           label="Password"
-          type="password"
+          htmlType="password"
           :errors="v$.password.$errors"
+          :disabled="loading"
       >
         <template #additional>
           <RouterLink class="text-sm text-header-secondary underline" to="/auth/forgot-password">
@@ -29,6 +31,7 @@
           type="primary"
           class="w-full bg-card py-2 rounded-md hover:brightness-125 transition-all"
           @click.prevent="login"
+          :disabled="loading"
       >
         Login
       </AButton>
@@ -37,34 +40,54 @@
 </template>
 
 <script setup lang="ts">
-import {useVuelidate} from "@vuelidate/core";
 import type {ValidationArgs} from "@vuelidate/core";
 import {required, email,} from "@vuelidate/validators";
 import AButton from "@/components/ui/AButton.vue";
 import ACard from "@/components/ui/ACard.vue";
 import {computed, reactive} from "vue";
 import FormItem from "@/components/ui/FormItem.vue";
+import {Auth} from "@/constants/apiRoutes";
+import {useForm} from "@/composables/useForm";
+import {useAuthStore} from "@/stores/auth";
+import type {LoginResponse} from "@/types/auth";
+import {useRouter} from "vue-router";
+
+const authStore = useAuthStore()
+
+const {
+  record,
+  v$,
+  loading,
+  errors,
+
+  submitForm
+} = useForm({
+  rules: computed<ValidationArgs>(() => ({
+    email: {
+      required,
+      email,
+    },
+    password: {
+      required
+    }
+  })),
+  url: Auth.login,
+  model: reactive({
+    email: "asdf@asdf.com",
+    password: "a1B@asdf"
+  })
+})
+
+const router = useRouter();
 
 const login = async () => {
-  const isFormCorrect = await v$.value.$validate();
-  console.log(isFormCorrect);
-  if (!isFormCorrect) return;
-  alert("weeee")
+  const response = await submitForm<Partial<LoginResponse>>();
+  if(!response) return;
+
+  authStore.setToken(response.token as string);
+  delete response.token
+  authStore.setUser(response);
+  return router.push({name: "app"})
 };
-const model = reactive({
-  email: "",
-  password: ""
-});
 
-const rules = computed<ValidationArgs>(() => ({
-  email: {
-    required,
-    email,
-  },
-  password: {
-    required
-  }
-}))
-
-const v$ = useVuelidate(rules, model);
 </script>
