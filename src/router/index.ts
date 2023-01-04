@@ -12,10 +12,11 @@ const layouts = import.meta.glob("../layouts/*.vue");
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
-        // {
-        //     path: '/',
-        //     redirect: {name: "login"}
-        // },
+        {
+            path: "/",
+            name: "home",
+            component: () => import("@/views/home/index.vue"),
+        },
         {
             path: '/',
             component: layouts["../layouts/AuthLayout.vue"],
@@ -26,7 +27,7 @@ const router = createRouter({
         },
         {
             path: '/',
-            component: layouts["../layouts/DefaultLayout.vue"],
+            component: layouts["../layouts/AppLayout.vue"],
             children: [
                 ...rootRoutes
             ],
@@ -34,21 +35,29 @@ const router = createRouter({
                 middleware: [authMiddleware]
             }
         },
+        {
+            path: "/:catchAll(.*)",
+            component: () => import("@/views/home/NotFound.vue"),
+        }
     ]
 });
 
-router.beforeEach((to, from, next) => {
-    if(!to.meta.middleware) return next();
+router.beforeEach(async (to, from, next) => {
+    if (!to.meta.middleware) return next();
     const middleware = Array.isArray(to.meta.middleware) ? to.meta.middleware : [to.meta.middleware];
 
     const authStore = useAuthStore();
+    if (!authStore.getIsLoggedIn) {
+        const showLogin = await authStore.init();
+        if (showLogin)
+            return next({name: "login"});
+    }
 
     const context = {
         to,
         from,
         next,
         token: authStore.getToken,
-        store: authStore,
     }
 
     middlewarePipeline(context, middleware, 0)

@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@formkit/auto-animate': 1.0.0-beta.5
+  '@iconify/iconify': ^3.0.1
   '@rushstack/eslint-patch': ^1.1.4
   '@types/node': ^18.11.12
   '@types/vuelidate': ^0.7.15
@@ -23,9 +24,11 @@ specifiers:
   vite: ^4.0.0
   vue: ^3.2.45
   vue-router: ^4.1.6
+  vue-spinner: ^1.0.4
   vue-tsc: ^1.0.12
 
 dependencies:
+  '@iconify/iconify': 3.0.1
   '@types/vuelidate': 0.7.15
   '@vuelidate/core': 2.0.0_vue@3.2.45
   '@vuelidate/validators': 2.0.0_vue@3.2.45
@@ -33,6 +36,7 @@ dependencies:
   pinia: 2.0.28_e7lp6ggkpgyi5vqd44m2kxvk6i
   vue: 3.2.45
   vue-router: 4.1.6_vue@3.2.45
+  vue-spinner: 1.0.4
 
 devDependencies:
   '@formkit/auto-animate': 1.0.0-beta.5
@@ -315,6 +319,16 @@ packages:
   /@humanwhocodes/object-schema/1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
+
+  /@iconify/iconify/3.0.1:
+    resolution: {integrity: sha512-OPqVBTh8YsfrYZRVFv3OkmFNLqacM0dy/Oiw1h2wO+RZW5LieNGHlG2f9pzaeVRFWbEB8LHTeo8mcwgUTUbibQ==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: false
+
+  /@iconify/types/2.0.0:
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
+    dev: false
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -2514,6 +2528,10 @@ packages:
     dependencies:
       '@vue/devtools-api': 6.4.5
       vue: 3.2.45
+    dev: false
+
+  /vue-spinner/1.0.4:
+    resolution: {integrity: sha512-GNG2F+8BLX201JT/jUX+84Gsi3ZteVQwt9K7mues3ts9FcQ95dGn7uu6a5ndSxdYYUEzfh1KngZiOE0u+l4itA==}
     dev: false
 
   /vue-template-compiler/2.7.14:

@@ -1,6 +1,7 @@
 <template>
   <button
-      class="w-full bg-card py-2 rounded-md hover:brightness-125 transition-all"
+      class="w-full bg-card py-2 rounded-md hover:brightness-125 transition-all
+      disabled:opacity-50 disabled:cursor-not-allowed"
       :class="{
           'bg-primary': type === 'primary',
         }"

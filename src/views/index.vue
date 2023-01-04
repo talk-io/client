@@ -1,5 +1,6 @@
 <template>
-  <span class="text-black">
+  <span class="">
     wawawawaaw
   </span>
 </template>
+

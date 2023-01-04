@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-screen">
-    <RouterView/>
+  <div class="flex items-center justify-center w-full h-screen">
+    <slot />
   </div>
 </template>
