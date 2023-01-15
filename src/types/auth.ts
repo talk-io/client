@@ -1,9 +1,58 @@
-export type User = {
-    id: string,
-    email: string,
-    username: string,
-    discriminator: string,
-    password: string,
+import type { ComputedRef } from "vue";
+
+export type BasicUser = {
+  _id: string;
+  username: string;
+  discriminator: string;
+  email: string;
+};
+
+export interface Author {
+  id: string;
+  name: string;
 }
 
-export type LoginResponse = User & {token: string}
+export interface Message {
+  id: string;
+  authorID: string;
+  author: Author;
+  content: string;
+  channelID: string;
+  guildID: string;
+}
+
+export enum ChannelType {
+  DM,
+  GROUP_DM,
+  GUILD_TEXT,
+  GUILD_VOICE,
+  GUILD_CATEGORY,
+}
+
+export type Channel = {
+  _id: string;
+  name: string;
+  guildID: string;
+  type: ChannelType;
+  parentID: string | null;
+  position: number;
+  topic?: string;
+  nsfw: boolean;
+  messages: Array<Message>;
+};
+
+export type Guild = {
+  _id: string;
+  name: string;
+  description: string;
+  owner: BasicUser;
+  members: Array<BasicUser>;
+  channels: Array<Channel>;
+  lastVisitedChannel?: string;
+};
+
+export type User = BasicUser & {
+  guilds: Array<Guild>;
+};
+
+export type LoginResponse = User & { token: string };

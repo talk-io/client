@@ -1,26 +1,57 @@
 import { defineStore } from "pinia";
-import type { Channel, Message } from "@/types/component";
 import { ref } from "vue";
+import type { Channel, Message } from "@/types/auth";
+import { ChannelType } from "@/types/auth";
 
 export const useChannelsStore = defineStore("channels", () => {
-  const channels = ref<Map<string, Array<Channel>>>(fakeChannels);
+  const channels = ref<Map<string, Array<Channel>>>(new Map());
 
+  const getCategories = (guildID: string) => {
+    const guildChannels = channels.value.get(guildID);
+    if (!guildChannels) return [];
+
+    return guildChannels
+      .filter((channel) => channel.type === ChannelType.GUILD_CATEGORY)
+      .sort((a, b) => a.position - b.position);
+  };
+  const getChannelsInCategory = (guildID: string, categoryID: string) => {
+    const guildChannels = channels.value.get(guildID);
+    if (!guildChannels) return [];
+
+    return guildChannels
+      .filter((channel) => channel.parentID === categoryID)
+      .sort((a, b) => a.position - b.position);
+  };
+  const getCategoriesAndChannels = (guildID: string) => {
+    const categories = getCategories(guildID);
+    return categories.map((category) => ({
+      ...category,
+      channels: getChannelsInCategory(guildID, category._id),
+    }));
+  };
   const getChannels = (guildID: string) => channels.value.get(guildID);
   const getMessages = (guildID: string, channelID: string) => {
     const guildChannels = channels.value.get(guildID);
     if (!guildChannels) return;
 
-    const channel = guildChannels.find((c) => c.id === channelID);
+    const channel = guildChannels.find((c) => c._id === channelID);
     if (!channel) return;
 
     return channel.messages;
   };
 
+  const setChannels = (guildID: string, fetchedChannels: Array<Channel>) => {
+    channels.value.set(guildID, fetchedChannels);
+  };
+
   return {
     getChannels,
     getMessages,
+    getCategories,
+    getChannelsInCategory,
+    getCategoriesAndChannels,
 
-    channels,
+    setChannels,
   };
 });
 

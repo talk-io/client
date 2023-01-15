@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-[240px_1fr]">
+  <div v-if="guild" class="grid grid-cols-[240px_1fr]">
     <div class="grid relative">
       <GuildSettings :guild="guild" class="w-full px-3 h-12 drop-shadow-lg absolute" />
       <Channels :guild="guild" class="pt-16 px-3" />

@@ -2,11 +2,15 @@ import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
 import { service } from "@/utils/service";
 import { Auth } from "@/constants/apiRoutes";
-import type { LoginResponse, User } from "@/types/auth";
+import type { BasicUser, LoginResponse, User } from "@/types/auth";
+import { io } from "socket.io-client";
+import { useGatewayStore } from "@/stores/gateway";
+import { useGuildStore } from "@/stores/guilds";
+import { useChannelsStore } from "@/stores/channels";
 
 export const useAuthStore = defineStore("authStore", () => {
   const state = reactive<{
-    user: Partial<User>;
+    user: Partial<BasicUser>;
     token: string | null;
     isLoggedIn: boolean | null;
     loading: boolean;
@@ -41,13 +45,32 @@ export const useAuthStore = defineStore("authStore", () => {
   const init = async (newToken?: string) => {
     setLoading(true);
     try {
-      const token =
-        newToken || localStorage.getItem(import.meta.env.VITE_TOKEN_KEY);
+      const token = newToken || getToken.value;
       if (!token) return resetState();
+
       setToken(token);
       setIsLoggedIn(true);
-      state.user = await service.get<never, User>(Auth.me);
+
+      const socket = io(import.meta.env.VITE_GATEWAY_HOST, {
+        extraHeaders: { authorization: `Bearer ${token}` },
+      });
+
+      const gatewayStore = useGatewayStore();
+      gatewayStore.setSocket(socket);
+      console.log("before init socket");
+      socket.once("init", (data: User) => {
+        const guildsStore = useGuildStore();
+        console.log(data);
+
+        const { guilds } = data;
+        guildsStore.setGuilds(guilds);
+
+        setUser(data);
+      });
+
+      // state.user = await service.get<never, User>(Auth.me);
     } catch (e) {
+      console.log(e);
       resetState();
     } finally {
       setLoading(false);

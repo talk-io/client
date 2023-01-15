@@ -3,7 +3,7 @@
     v-slot="{ isExactActive }"
     :to="{
       name: 'guild-channel',
-      params: { guildID: route.params.guildID, channelID: channel.id },
+      params: { guildID: route.params.guildID, channelID: channel._id },
     }"
   >
     <div
@@ -18,7 +18,7 @@
         :class="{
           '!text-label': isExactActive,
         }"
-        class="text-tertiary text-lg font-normal -mt-1"
+        class="text-header-secondary text-lg font-normal -mt-1"
       >
         {{ channel.name }}
       </span>
@@ -28,8 +28,9 @@
 
 <script lang="ts" setup>
 import { Icon } from "@iconify/vue";
-import type { Channel } from "@/types/component";
 import { useRoute } from "vue-router";
+
+import type { Channel } from "@/types/auth";
 
 const route = useRoute();
 

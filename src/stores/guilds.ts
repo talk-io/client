@@ -1,17 +1,33 @@
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
-import type { Guild } from "@/types/component";
+import { computed, reactive, ref } from "vue";
 import { useChannelsStore } from "@/stores/channels";
+import type { Guild } from "@/types/auth";
 
 export const useGuildStore = defineStore("guilds", () => {
   const channelsStore = useChannelsStore();
 
-  const state = ref<Map<string, Guild>>(fakeGuilds(channelsStore));
+  const state = ref<Map<string, Guild>>(new Map());
+  // fakeGuilds(channelsStore)
 
-  const getGuilds = computed(() => Array.from(state.value.values()));
+  const getGuilds = computed(() => Array.from(state.value.values() || []));
   const getGuild = (guildID: string) => state.value.get(guildID);
   const getLastVisitedChannel = (guildID: string) =>
     state.value.get(guildID)?.lastVisitedChannel || 1 + ""; // TODO: get last visited channel
+
+  const setGuilds = (guilds: Array<Guild>) => {
+    const guildsMap = guilds.map((guild) => {
+      channelsStore.setChannels(guild._id, guild.channels);
+
+      const newGuild = reactive({
+        ...guild,
+        channels: channelsStore.getChannels(guild._id),
+      });
+
+      return [guild._id, newGuild];
+    });
+    // @ts-ignore
+    state.value = new Map(guildsMap);
+  };
 
   const setLastVisitedChannel = (guildID: string, channelID: string) => {
     const guild = state.value.get(guildID);
@@ -25,6 +41,7 @@ export const useGuildStore = defineStore("guilds", () => {
     getLastVisitedChannel,
 
     setLastVisitedChannel,
+    setGuilds,
   };
 });
 

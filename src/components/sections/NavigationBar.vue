@@ -14,13 +14,13 @@
 
     <NavbarItem
       v-for="guild in guildStore.getGuilds"
-      :key="guild.id"
+      :key="guild._id"
       :backgroundImage="talkioLogo"
       :to="{
         name: 'guild-channel',
         params: {
-          guildID: guild.id,
-          channelID: guildStore.getLastVisitedChannel(guild.id),
+          guildID: guild._id,
+          channelID: guildStore.getLastVisitedChannel(guild._id),
         },
       }"
     />
@@ -33,4 +33,5 @@ import talkioLogo from "@/assets/images/logo.png";
 import { useGuildStore } from "@/stores/guilds";
 
 const guildStore = useGuildStore();
+console.log(guildStore.getGuilds);
 </script>

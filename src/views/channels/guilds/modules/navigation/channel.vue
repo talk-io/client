@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { Guild } from "@/types/component";
 import { Icon } from "@iconify/vue";
+import type { Guild } from "@/types/auth";
 
 defineProps<{
   guild: Guild;
