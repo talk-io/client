@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { computed, reactive, ref } from "vue";
+import { computed, reactive } from "vue";
 import { service } from "@/utils/service";
 import { Auth } from "@/constants/apiRoutes";
 import type { LoginResponse, User } from "@/types/auth";

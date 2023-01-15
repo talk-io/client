@@ -1,7 +1,10 @@
 {
-  "name": "client",
-  "version": "0.0.0",
-  "private": true,
+  "name": "talk-io_client",
+  "version": "0.0.1",
+  "description": "Open source real-time chat application.",
+  "author": "Aniket Kotal",
+  "private": false,
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
