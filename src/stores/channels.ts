@@ -29,24 +29,23 @@ export const useChannelsStore = defineStore("channels", () => {
       channels: getChannelsInCategory(guildID, category._id),
     }));
   };
-  const getChannels = (guildID: string) => channels.value.get(guildID);
-  const getMessages = (guildID: string, channelID: string) => {
-    const guildChannels = channels.value.get(guildID);
-    if (!guildChannels) return;
-
-    const channel = guildChannels.find((c) => c._id === channelID);
-    if (!channel) return;
-
-    return channel.messages;
-  };
+  const getChannels = (guildID: string) =>
+    channels.value
+      .get(guildID)
+      ?.filter((channel) => channel.type !== ChannelType.GUILD_CATEGORY);
 
   const setChannels = (guildID: string, fetchedChannels: Array<Channel>) => {
-    channels.value.set(guildID, fetchedChannels);
+    channels.value.set(
+      guildID,
+      fetchedChannels.map((channel) => ({
+        ...channel,
+        messages: [],
+      })),
+    );
   };
 
   return {
     getChannels,
-    getMessages,
     getCategories,
     getChannelsInCategory,
     getCategoriesAndChannels,
@@ -55,38 +54,38 @@ export const useChannelsStore = defineStore("channels", () => {
   };
 });
 
-const fakeMessages = (guildID: string, channelID: string): Array<Message> =>
-  [...Array(5)].map((_, idx) => ({
-    id: idx + 1 + "",
-    authorID: "1",
-    content: `Message #${idx + 1}`,
-    channelID: channelID,
-    guildID: guildID,
-    author: {
-      id: "1",
-      name: "weee",
-    },
-  }));
+// const fakeMessages = (guildID: string, channelID: string): Array<Message> =>
+//   [...Array(5)].map((_, idx) => ({
+//     id: idx + 1 + "",
+//     authorID: "1",
+//     content: `Message #${idx + 1}`,
+//     channelID: channelID,
+//     guildID: guildID,
+//     author: {
+//       id: "1",
+//       name: "weee",
+//     },
+//   }));
 
-const fakeChannels = new Map(
-  [...Array(10)].map((_, idx) => {
-    const id: string = idx + 1 + "";
-    return [
-      id,
-      [
-        {
-          id: "1",
-          name: "general",
-          guildID: id,
-          messages: fakeMessages(id, "1"),
-        },
-        {
-          id: "2",
-          name: "random",
-          guildID: id,
-          messages: fakeMessages(id, "2"),
-        },
-      ],
-    ];
-  }),
-);
+// const fakeChannels = new Map(
+//   [...Array(10)].map((_, idx) => {
+//     const id: string = idx + 1 + "";
+//     return [
+//       id,
+//       [
+//         {
+//           id: "1",
+//           name: "general",
+//           guildID: id,
+//           messages: fakeMessages(id, "1"),
+//         },
+//         {
+//           id: "2",
+//           name: "random",
+//           guildID: id,
+//           messages: fakeMessages(id, "2"),
+//         },
+//       ],
+//     ];
+//   }),
+// );

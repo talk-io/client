@@ -57,10 +57,9 @@ export const useAuthStore = defineStore("authStore", () => {
 
       const gatewayStore = useGatewayStore();
       gatewayStore.setSocket(socket);
-      console.log("before init socket");
+
       socket.once("init", (data: User) => {
         const guildsStore = useGuildStore();
-        console.log(data);
 
         const { guilds } = data;
         guildsStore.setGuilds(guilds);

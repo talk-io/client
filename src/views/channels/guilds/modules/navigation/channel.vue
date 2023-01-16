@@ -1,15 +1,15 @@
 <template>
   <div class="bg-card flex gap-2 px-6 items-center">
     <Icon class="text-lg" icon="octicon:hash-16" />
-    <span>general</span>
+    <span>{{ channel.name }}</span>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { Icon } from "@iconify/vue";
-import type { Guild } from "@/types/auth";
+  import { Icon } from "@iconify/vue";
+  import type { Channel } from "@/types/auth";
 
-defineProps<{
-  guild: Guild;
-}>();
+  defineProps<{
+    channel: Channel;
+  }>();
 </script>

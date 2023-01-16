@@ -4,18 +4,12 @@ export type BasicUser = {
   _id: string;
   username: string;
   discriminator: string;
-  email: string;
 };
-
-export interface Author {
-  id: string;
-  name: string;
-}
 
 export interface Message {
   id: string;
   authorID: string;
-  author: Author;
+  author: BasicUser;
   content: string;
   channelID: string;
   guildID: string;
@@ -52,6 +46,7 @@ export type Guild = {
 };
 
 export type User = BasicUser & {
+  email: string;
   guilds: Array<Guild>;
 };
 

@@ -1,6 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 @tailwind base;
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: white black;
+}
+
 @tailwind components;
 @tailwind utilities;
 
@@ -20,7 +26,7 @@
 }
 
 body {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: "Source Sans Pro", sans-serif;
     background-color: #1e2124;
     color: white;
 }
