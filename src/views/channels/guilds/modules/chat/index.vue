@@ -1,14 +1,27 @@
 <template>
-  <div class="flex flex-col-reverse gap-1 py-5 overflow-y-auto h-screen">
-    <Message v-for="message in messages" :key="message.id" :message="message" />
+  <div class="flex flex-col h-screen pb-2">
+    <div class="flex flex-col-reverse gap-3 overflow-y-auto h-full pt-12 pb-6">
+      <Message
+        v-for="message in messages"
+        :key="message.id"
+        :message="message"
+      />
+    </div>
+    <MessageCreate :channel="channel" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
 import Message from "@/components/ui/guild/message.vue";
+import MessageCreate from "./MessageCreate.vue";
 import { useMessagesStore } from "@/stores/messages";
 import { onMounted, ref, watch } from "vue";
+import type { Channel } from "@/types/auth";
+
+defineProps<{
+  channel: Channel
+}>();
 
 const route = useRoute();
 
@@ -27,14 +40,4 @@ watch(
     messages.value = await messagesStore.getMessages(cur as string);
   }
 );
-
-// const messages = await computed(() => messagesStore.getMessages(route.params.channelID as string));
-// console.log(messages.value);
-// const channelStore = useChannelsStore();
-// const messages = computed(() =>
-//   channelStore.getMessages(
-//     route.params.guildID as string,
-//     route.params.channelID as string
-//   )
-// );
 </script>

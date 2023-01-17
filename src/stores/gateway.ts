@@ -1,13 +1,33 @@
 import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
 import type { Socket } from "socket.io-client";
+import { Events } from "@/types/events";
+import type { Message, User } from "@/types/auth";
+import { useGuildStore } from "@/stores/guilds";
+import { useAuthStore } from "@/stores/auth";
+import { io } from "socket.io-client";
+import { useMessagesStore } from "@/stores/messages";
+
+const {
+  GuildUserEvents,
+  GuildEvents,
+  ChannelEvents,
+  MessageEvents,
+  UserEvents,
+} = Events;
 
 export const useGatewayStore = defineStore("gatewayStore", () => {
+  const guildsStore = useGuildStore();
+  const authStore = useAuthStore();
+  const messagesStore = useMessagesStore();
+
   const state = reactive<{
-    socket: Socket | null;
+    socket: Socket;
     userSockets: Record<string, string>;
   }>({
-    socket: null,
+    socket: io(import.meta.env.VITE_GATEWAY_HOST, {
+      extraHeaders: { authorization: `Bearer ${authStore.getToken}` },
+    }),
     userSockets: {},
   });
 
@@ -18,13 +38,17 @@ export const useGatewayStore = defineStore("gatewayStore", () => {
   const addUserSocket = (userID: string, clientID: string) =>
     (state.userSockets[userID] = clientID);
   const removeUserSocket = (userID: string) => delete state.userSockets[userID];
-
   const getUserSocket = (userID: string) => state.userSockets[userID];
 
-  const resetState = () => {
-    state.socket = null;
-    state.userSockets = {};
-  };
+  state.socket.once("init", (data: User) => {
+    const { guilds } = data;
+    guildsStore.setGuilds(guilds);
+    authStore.setUser(data);
+  });
+
+  const { MESSAGE_CREATED, MESSAGE_UPDATED, MESSAGE_DELETED, GET_MESSAGES } =
+    MessageEvents;
+  state.socket.on(MESSAGE_CREATED, messagesStore.addEmittedMessage);
 
   return {
     getSocket,
@@ -33,6 +57,5 @@ export const useGatewayStore = defineStore("gatewayStore", () => {
     addUserSocket,
     removeUserSocket,
     getUserSocket,
-    resetState,
   };
 });

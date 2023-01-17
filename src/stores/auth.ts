@@ -6,7 +6,7 @@ import type { BasicUser, LoginResponse, User } from "@/types/auth";
 import { io } from "socket.io-client";
 import { useGatewayStore } from "@/stores/gateway";
 import { useGuildStore } from "@/stores/guilds";
-import { useChannelsStore } from "@/stores/channels";
+import { Events } from "@/types/events";
 
 export const useAuthStore = defineStore("authStore", () => {
   const state = reactive<{
@@ -57,15 +57,6 @@ export const useAuthStore = defineStore("authStore", () => {
 
       const gatewayStore = useGatewayStore();
       gatewayStore.setSocket(socket);
-
-      socket.once("init", (data: User) => {
-        const guildsStore = useGuildStore();
-
-        const { guilds } = data;
-        guildsStore.setGuilds(guilds);
-
-        setUser(data);
-      });
 
       // state.user = await service.get<never, User>(Auth.me);
     } catch (e) {

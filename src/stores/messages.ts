@@ -23,6 +23,13 @@ export const useMessagesStore = defineStore("messagesStore", () => {
     return messages.value.get(channelID) || [];
   };
 
+  const addEmittedMessage = (payload: Message) => {
+    const channelMessages = messages.value.get(payload.channelID);
+    if (!channelMessages) return;
+
+    channelMessages.unshift(payload);
+  };
+
   // const getMessages = async (channelID: string): Promise<Array<Message>> => {
   //   const messagesInChannel = messages.value.get(channelID);
   //   if (!messagesInChannel) {
@@ -33,5 +40,7 @@ export const useMessagesStore = defineStore("messagesStore", () => {
 
   return {
     getMessages,
+
+    addEmittedMessage,
   };
 });

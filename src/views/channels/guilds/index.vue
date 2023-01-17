@@ -7,7 +7,7 @@
     <div class="grid grid-cols-[1fr_240px] relative">
       <ChannelSettings v-if="currentChannel" :channel="currentChannel"
                        class="w-full px-3 h-12 drop-shadow-lg absolute" />
-      <Chat :guild="guild" class="pt-16" />
+      <Chat v-if="currentChannel" :channel="currentChannel" class="pt-12" />
       <Members :guild="guild" class="pt-16 px-3" />
     </div>
   </div>

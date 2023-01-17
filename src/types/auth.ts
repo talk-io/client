@@ -11,6 +11,7 @@ export interface Message {
   authorID: string;
   author: BasicUser;
   content: string;
+  channel: Channel;
   channelID: string;
   guildID: string;
 }
