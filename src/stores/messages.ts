@@ -1,12 +1,13 @@
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import type { Message } from "@/types/auth";
 import { Message as MessageService } from "@/constants/apiRoutes";
-import { useChannelsStore } from "@/stores/channels";
+import { useAuthStore } from "@/stores/auth";
+import { service } from "@/utils/service";
 
 export const useMessagesStore = defineStore("messagesStore", () => {
   const messages = ref<Map<string, Array<Message>>>(new Map());
-  const channelsStore = useChannelsStore();
+  const authStore = useAuthStore();
 
   const _fetchMessages = async (channelID: string) => {
     const fetchedMessages = await MessageService.GET(channelID);
@@ -27,7 +28,34 @@ export const useMessagesStore = defineStore("messagesStore", () => {
     const channelMessages = messages.value.get(payload.channelID);
     if (!channelMessages) return;
 
-    channelMessages.unshift(payload);
+    const userID = authStore.getState.user?._id;
+    if (userID === payload.authorID) return;
+    channelMessages.push(payload);
+  };
+
+  const createMessage = async (payload: {
+    _id: string;
+    content: string;
+    channelID: string;
+  }) => {
+    const channelMessages = messages.value.get(payload.channelID);
+    if (!channelMessages) return;
+
+    const user = authStore.getState.user;
+
+    const loadingMsg = { content: payload.content, author: user };
+    channelMessages.push(<Message>loadingMsg);
+
+    try {
+      const message = await service.post<never, Message>(
+        MessageService.SEND(payload.channelID),
+        payload,
+      );
+      const idx = channelMessages.findIndex((msg) => msg._id === payload._id);
+      channelMessages.splice(idx, 1, message);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // const getMessages = async (channelID: string): Promise<Array<Message>> => {
@@ -42,5 +70,6 @@ export const useMessagesStore = defineStore("messagesStore", () => {
     getMessages,
 
     addEmittedMessage,
+    createMessage,
   };
 });

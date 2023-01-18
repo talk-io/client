@@ -7,7 +7,7 @@ export type BasicUser = {
 };
 
 export interface Message {
-  id: string;
+  _id: string;
   authorID: string;
   author: BasicUser;
   content: string;

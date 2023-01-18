@@ -1,16 +1,20 @@
-import {createApp} from 'vue'
-import {createPinia} from 'pinia'
-import {autoAnimatePlugin} from '@formkit/auto-animate/vue'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import { autoAnimatePlugin } from "@formkit/auto-animate/vue";
 
-import App from './App.vue'
-import router from './router'
+import App from "./App.vue";
+// @ts-ignore
+import VueSkeletonLoader from "skeleton-loader-vue";
 
-import './assets/main.css'
+import router from "./router";
 
-const app = createApp(App)
+import "./assets/main.css";
 
-app.use(createPinia())
-app.use(router)
-app.use(autoAnimatePlugin)
+const app = createApp(App);
 
-app.mount('#app')
+app.use(createPinia());
+app.use(router);
+app.use(autoAnimatePlugin);
+app.component("vue-skeleton-loader", VueSkeletonLoader);
+
+app.mount("#app");
