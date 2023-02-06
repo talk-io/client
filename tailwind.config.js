@@ -37,6 +37,9 @@ module.exports = {
       padding: {
         chat: "1.5rem",
       },
+      fontSize: {
+        "4.5xl": "2.5rem",
+      },
     },
   },
   plugins: [require("tailwind-scrollbar")({ noncompatible: true })],

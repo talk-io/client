@@ -1,10 +1,10 @@
 <template>
-  <div class="flex">
-    <Icon class="text-5xl text-header-secondary" icon="mdi:face-man-profile" />
-    <span>
+  <li class="flex items-center gap-2.5 hover:brightness-110 px-2 py-1 rounded-md cursor-pointer transition-all">
+    <Icon class="text-4.5xl text-header-secondary" icon="mdi:face-man-profile" />
+    <span class="font-medium text-lg">
       {{ user.username }}
     </span>
-  </div>
+  </li>
 </template>
 
 <script lang="ts" setup>

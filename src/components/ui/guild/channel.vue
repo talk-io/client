@@ -11,7 +11,7 @@
         'bg-card': isExactActive,
         'brightness-125': isExactActive,
       }"
-      class="flex transition-colors items-center duration-75 select-none cursor-pointer gap-2 hover:brightness-110 hover:bg-card px-3 py-1.5 rounded-md"
+      class="flex transition-colors items-center duration-75 select-none cursor-pointer gap-2 hover:brightness-110 px-3 py-1.5 rounded-md"
     >
       <Icon class="text-tertiary text-lg" icon="octicon:hash-16" />
       <span

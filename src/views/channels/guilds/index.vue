@@ -14,7 +14,7 @@
         class="w-full px-3 h-12 drop-shadow-lg absolute"
       />
       <Chat v-if="currentChannel" :channel="currentChannel" class="pt-12" />
-      <Members :guild="guild" class="pt-16 px-3" />
+      <Members :guild="guild" class="pt-16 px-2" />
     </div>
   </div>
 </template>

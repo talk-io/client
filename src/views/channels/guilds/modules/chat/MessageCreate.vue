@@ -36,7 +36,6 @@ const submit = async () => {
   if (!msg.length) return;
   message.value = "";
   await messagesStore.createMessage({
-    _id: nanoid(),
     content: msg,
     channelID: props.channel._id
   });

@@ -1,17 +1,10 @@
 <template>
   <div class="flex flex-col w-full h-screen">
-    <!--    <vue-skeleton-loader-->
-    <!--      v-if="messagesFetching"-->
-    <!--      :height="200"-->
-    <!--      :width="200"-->
-    <!--      animation="fade"-->
-    <!--      type="circle"-->
-    <!--    />-->
     <div v-if="messagesFetching" class="w-10 h-10 bg-red-500" />
     <div
       v-else
       ref="messagesList"
-      class="flex flex-col gap-3 overflow-y-auto flex-nowrap h-full py-8"
+      class="flex flex-col-reverse gap-3 overflow-y-auto h-full py-8"
     >
       <Message
         v-for="(message, idx) in messages"
@@ -57,7 +50,7 @@ const fetchMessages = async () => {
   messagesFetching.value = true;
   try {
     messages.value = await messagesStore.getMessages(
-      route.params.channelID as string
+      route.params.channelID as string,
     );
   } catch (e) {
     console.log(e);

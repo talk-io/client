@@ -3,6 +3,5 @@
   "tabWidth": 2,
   "semi": true,
   "singleQuote": false,
-  "arrowParens": "always",
-  "vueIndentScriptAndStyle": true
+  "arrowParens": "always"
 }

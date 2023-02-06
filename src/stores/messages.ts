@@ -4,6 +4,7 @@ import type { Message } from "@/types/auth";
 import { Message as MessageService } from "@/constants/apiRoutes";
 import { useAuthStore } from "@/stores/auth";
 import { service } from "@/utils/service";
+import { nanoid } from "nanoid";
 
 export const useMessagesStore = defineStore("messagesStore", () => {
   const messages = ref<Map<string, Array<Message>>>(new Map());
@@ -30,11 +31,10 @@ export const useMessagesStore = defineStore("messagesStore", () => {
 
     const userID = authStore.getState.user?._id;
     if (userID === payload.authorID) return;
-    channelMessages.push(payload);
+    channelMessages.unshift(payload);
   };
 
   const createMessage = async (payload: {
-    _id: string;
     content: string;
     channelID: string;
   }) => {
@@ -43,15 +43,21 @@ export const useMessagesStore = defineStore("messagesStore", () => {
 
     const user = authStore.getState.user;
 
-    const loadingMsg = { content: payload.content, author: user };
-    channelMessages.push(<Message>loadingMsg);
+    const loadingMsg = {
+      _id: nanoid(),
+      content: payload.content,
+      author: user,
+    };
+    channelMessages.unshift(<Message>loadingMsg);
 
     try {
       const message = await service.post<never, Message>(
         MessageService.SEND(payload.channelID),
         payload,
       );
-      const idx = channelMessages.findIndex((msg) => msg._id === payload._id);
+      const idx = channelMessages.findIndex(
+        (msg) => msg._id === loadingMsg._id,
+      );
       channelMessages.splice(idx, 1, message);
     } catch (error) {
       console.log(error);
