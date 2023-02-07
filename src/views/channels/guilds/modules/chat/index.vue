@@ -5,12 +5,21 @@
       v-else
       ref="messagesList"
       class="flex flex-col-reverse gap-3 overflow-y-auto h-full py-8"
+      @mouseleave="handleLeave"
     >
+      <div
+        v-if="isVisible"
+        :style="highlightedStyles"
+        aria-hidden="true"
+        class="bg-secondary-light brightness-110 rounded-md transition-all absolute top-0 select-none z-10"
+      />
       <Message
-        v-for="(message, idx) in messages"
+        v-for="message in messages"
+        :id="message._id"
         :key="message._id"
-        :class="{ 'mt-auto': !idx }"
         :message="message"
+        class="z-20"
+        @mouseenter="handleEnter(message._id)"
       />
     </div>
     <div class="flex flex-col h-24 mx-chat">
@@ -19,7 +28,9 @@
         class="w-full"
         @onMessageCreate="scrollToEnd"
       />
-      <span class="pb-0.5 px-1">muffins is typing...</span>
+      <div class="h-7">
+        <span class="px-1">muffins is typing...</span>
+      </div>
     </div>
   </div>
 </template>
@@ -32,8 +43,9 @@ import MessageCreate from "./MessageCreate.vue";
 import { useMessagesStore } from "@/stores/messages";
 import { nextTick, onMounted, ref, watch } from "vue";
 import type { Channel } from "@/types/auth";
+import { useVerticalTransitionAnimation } from "@/composables/useVerticalTransitionAnimation";
 
-const messagesList = ref<HTMLElement>();
+const messagesList = ref<HTMLDivElement>();
 
 defineProps<{
   channel: Channel;
@@ -70,4 +82,15 @@ onMounted(fetchMessages);
 
 watch(() => route.params.channelID, fetchMessages);
 watch(() => messages.value?.length, scrollToEnd);
+
+// CHAT ANIMATIONS
+const {
+  highlightedStyles,
+  isVisible,
+
+  handleEnter,
+  handleLeave,
+} = useVerticalTransitionAnimation({
+  additionalSpace: 0,
+});
 </script>

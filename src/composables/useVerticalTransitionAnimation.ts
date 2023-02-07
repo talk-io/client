@@ -5,6 +5,7 @@ export const useVerticalTransitionAnimation = ({ additionalSpace = 0 }) => {
     height: "0px",
     transform: "translate(0px, 0)",
     opacity: "1",
+    width: "0px",
   });
   const isVisible = ref(false);
 
@@ -16,6 +17,7 @@ export const useVerticalTransitionAnimation = ({ additionalSpace = 0 }) => {
     highlightedStyles["height"] = `${linkCoords.height}px`;
     highlightedStyles["transform"] = `translate(0px, ${height}px)`;
     highlightedStyles["opacity"] = "1";
+    highlightedStyles["width"] = `${linkCoords.width}px`;
     isVisible.value = true;
   };
 

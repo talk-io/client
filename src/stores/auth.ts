@@ -6,9 +6,12 @@ import type { BasicUser, LoginResponse, User } from "@/types/auth";
 import { io } from "socket.io-client";
 import { useGatewayStore } from "@/stores/gateway";
 import { useGuildStore } from "@/stores/guilds";
-import { Events } from "@/types/events";
+import { useRouter } from "vue-router";
 
 export const useAuthStore = defineStore("authStore", () => {
+  const guildsStore = useGuildStore();
+  const router = useRouter();
+
   const state = reactive<{
     user: Partial<BasicUser>;
     token: string | null;
@@ -40,6 +43,7 @@ export const useAuthStore = defineStore("authStore", () => {
     state.token = null;
     state.isLoggedIn = null;
     localStorage.removeItem(import.meta.env.VITE_TOKEN_KEY);
+    setLoading(false);
     return false;
   };
   const init = async (newToken?: string) => {
@@ -48,22 +52,46 @@ export const useAuthStore = defineStore("authStore", () => {
       const token = newToken || getToken.value;
       if (!token) return resetState();
 
-      setToken(token);
-      setIsLoggedIn(true);
-
       const socket = io(import.meta.env.VITE_GATEWAY_HOST, {
-        extraHeaders: { authorization: `Bearer ${token}` },
+        extraHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // socket.io.on("close", (wee) => {
+      //   console.log({wee});
+      //   // resetState();
+      //   // router.push({ name: "login" });
+      //   // setLoading(false);
+      // });
+
+      socket.on("connect_error", async (err) => {
+        if (err.message === "Unauthorized") {
+          resetState();
+          await router.push({ name: "login" });
+          setLoading(false);
+        }
+      });
+
+      socket.once("init", (data: User) => {
+        const { guilds } = data;
+        guildsStore.setGuilds(guilds);
+
+        setToken(token);
+        setUser(data);
+        setIsLoggedIn(true);
+        setLoading(false);
+        socket.removeListener("connect_error");
       });
 
       const gatewayStore = useGatewayStore();
       gatewayStore.setSocket(socket);
+      gatewayStore.addListeners();
 
       // state.user = await service.get<never, User>(Auth.me);
     } catch (e) {
       console.log(e);
       resetState();
-    } finally {
-      setLoading(false);
     }
   };
   const login = async (email: string, password: string) => {

@@ -33,5 +33,4 @@ import talkioLogo from "@/assets/images/logo.png";
 import { useGuildStore } from "@/stores/guilds";
 
 const guildStore = useGuildStore();
-console.log(guildStore.getGuilds);
 </script>

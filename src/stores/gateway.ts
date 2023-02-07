@@ -2,11 +2,8 @@ import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
 import type { Socket } from "socket.io-client";
 import { Events } from "@/types/events";
-import type { Message, User } from "@/types/auth";
-import { useGuildStore } from "@/stores/guilds";
-import { useAuthStore } from "@/stores/auth";
-import { io } from "socket.io-client";
 import { useMessagesStore } from "@/stores/messages";
+import { useAuthStore } from "@/stores/auth";
 
 const {
   GuildUserEvents,
@@ -17,17 +14,14 @@ const {
 } = Events;
 
 export const useGatewayStore = defineStore("gatewayStore", () => {
-  const guildsStore = useGuildStore();
-  const authStore = useAuthStore();
   const messagesStore = useMessagesStore();
+  const authStore = useAuthStore();
 
   const state = reactive<{
-    socket: Socket;
+    socket: Socket | null;
     userSockets: Record<string, string>;
   }>({
-    socket: io(import.meta.env.VITE_GATEWAY_HOST, {
-      extraHeaders: { authorization: `Bearer ${authStore.getToken}` },
-    }),
+    socket: null,
     userSockets: {},
   });
 
@@ -40,22 +34,30 @@ export const useGatewayStore = defineStore("gatewayStore", () => {
   const removeUserSocket = (userID: string) => delete state.userSockets[userID];
   const getUserSocket = (userID: string) => state.userSockets[userID];
 
-  state.socket.once("init", (data: User) => {
-    const { guilds } = data;
-    guildsStore.setGuilds(guilds);
-    authStore.setUser(data);
-  });
+  const addListeners = () => {
+    if (!state.socket) return;
 
-  const { MESSAGE_CREATED, MESSAGE_UPDATED, MESSAGE_DELETED, GET_MESSAGES } =
-    MessageEvents;
-  state.socket.on(MESSAGE_CREATED, messagesStore.addEmittedMessage);
+    state.socket.on("connect_error", () => {
+      authStore.setLoading(true);
+    });
+
+    state.socket.on("connect", () => {
+      authStore.setLoading(false);
+    });
+
+    const { MESSAGE_CREATED, MESSAGE_UPDATED, MESSAGE_DELETED, GET_MESSAGES } =
+      MessageEvents;
+    state.socket.on(MESSAGE_CREATED, messagesStore.addEmittedMessage);
+  };
 
   return {
     getSocket,
     getUserSockets,
+
     setSocket,
     addUserSocket,
     removeUserSocket,
     getUserSocket,
+    addListeners,
   };
 });

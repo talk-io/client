@@ -3,7 +3,7 @@
     :class="{
       'opacity-50': !message._id,
     }"
-    class="flex w-full items-center py-1 transition-colors hover:bg-secondary-light px-chat gap-2"
+    class="flex w-full items-center py-1 px-chat gap-2"
   >
     <Icon class="text-5xl text-header-secondary" icon="mdi:face-man-profile" />
     <div class="flex flex-col">

@@ -21,7 +21,6 @@ import type { Channel } from "@/types/auth";
 import Icon from "@/components/ui/Icon.vue";
 import { ref } from "vue";
 import { useMessagesStore } from "@/stores/messages";
-import { nanoid } from "nanoid";
 
 const props = defineProps<{
   channel: Channel;
