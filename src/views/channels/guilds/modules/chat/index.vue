@@ -15,7 +15,7 @@
         class="flex flex-col-reverse gap-3 overflow-y-auto h-full py-6"
         @mouseleave="handleLeave"
       >
-        <component :is="HighlightedDiv" class="bg-white" />
+        <component :is="HighlightedDiv" />
         <Message
           v-for="message in messages"
           :id="message._id"
@@ -46,7 +46,7 @@ import type { Channel } from "@/types/auth";
 import Message from "@/components/ui/guild/message.vue";
 import MessageCreate from "./modules/MessageCreate.vue";
 import UserTyping from "./modules/UserTyping.vue";
-import VerticalTransition from "@/composables/VerticalTransition.vue";
+import VerticalTransition from "@/components/animations/VerticalTransition.vue";
 
 const messagesList = ref<HTMLDivElement>();
 
