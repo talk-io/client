@@ -1,13 +1,13 @@
 <template>
-  <div class="h-7">
+  <div v-auto-animate class="h-7">
     <span v-if="currentlyTyping.length" class="px-1">{{ text }}</span>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { BasicUser, Channel } from "@/types/auth";
+import type { Channel } from "@/types/auth";
 import { useChannelsStore } from "@/stores/channels";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed } from "vue";
 
 const props = defineProps<{
   channel: Channel;
@@ -23,10 +23,4 @@ const text = computed(() => {
         currentlyTyping.value.length - 1
       } others are typing...`;
 });
-
-// const fetchCurrentlyTyping = async () => {
-//   currentlyTyping.value = channelsStore.getUsersTyping(props.channel._id);
-// };
-//
-// onMounted(fetchCurrentlyTyping)
 </script>

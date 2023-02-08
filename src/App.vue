@@ -1,17 +1,15 @@
 <template>
   <RouterView v-slot="{ Component }">
-    <Transition name="fade">
-      <DefaultLayout v-if="authStore.getLoading">
-        <ScaleLoader color="#CD5A41" />
-      </DefaultLayout>
-      <Suspense v-else>
-        <div class="absolute w-full">
-          <component :is="Component" />
-        </div>
+    <Suspense>
+      <div v-auto-animate>
+        <DefaultLayout v-if="authStore.getLoading">
+          <ScaleLoader color="#CD5A41" />
+        </DefaultLayout>
+        <component :is="Component" v-else class="absolute w-full" />
+      </div>
 
-        <template #fallback>Loading...</template>
-      </Suspense>
-    </Transition>
+      <template #fallback>Loading...</template>
+    </Suspense>
   </RouterView>
 </template>
 
