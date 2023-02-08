@@ -15,7 +15,7 @@
         class="flex flex-col-reverse gap-3 overflow-y-auto h-full py-6"
         @mouseleave="handleLeave"
       >
-        <component :is="HighlightedDiv" />
+        <component :is="HighlightedDiv"  v-if="HighlightedDiv"/>
         <Message
           v-for="message in messages"
           :id="message._id"

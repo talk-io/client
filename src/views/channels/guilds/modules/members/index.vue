@@ -12,12 +12,12 @@
       >
         <span
           ref="members_title"
-          class="text-header-secondary font-medium text-base px-3"
+          class="text-header-secondary font-medium text-base px-3 select-none"
         >
           MEMBERS &dash; {{ members.length }}
         </span>
         <ul class="flex flex-col" @mouseleave="handleLeave">
-          <component :is="HighlightedDiv" class="!bg-card" />
+          <component :is="HighlightedDiv" v-if="HighlightedDiv" class="!bg-card" />
           <Member
             v-for="member in members"
             :id="member._id"

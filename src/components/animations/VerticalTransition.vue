@@ -1,15 +1,13 @@
 <template>
   <slot
-    :HighlightedDiv="HighlightedDiv"
+    :HighlightedDiv="isVisible ? HighlightedDiv : null"
     :handleEnter="handleEnter"
     :handleLeave="handleLeave"
-    :highlightedStyles="highlightedStyles"
-    :isVisible="isVisible"
   />
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, h, reactive, ref } from "vue";
+import { computed, defineComponent, h, reactive, ref } from "vue";
 
 const props = defineProps<{
   additionalSpace?: number;
@@ -47,7 +45,6 @@ const handleLeave = () => {
 const HighlightedDiv = defineComponent(() => {
   return () => {
     return h("div", {
-      vIf: isVisible,
       style: highlightedStyles,
       "aria-hidden": "true",
       class:

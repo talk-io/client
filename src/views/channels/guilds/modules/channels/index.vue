@@ -9,25 +9,33 @@
       }"
       :additionalSpace="16 * 4"
     >
-      <div
-        class="flex flex-col gap-3 h-screen overflow-y-auto relative"
-        @mouseleave="handleLeave"
-      >
-        <component :is="HighlightedDiv" class="!bg-card" />
-        <template
-          v-for="category in channelsStore.getCategoriesAndChannels(guild._id)"
-          :key="category._id"
+      <div class="h-screen overflow-y-auto">
+        <div
+          class="flex flex-col gap-3 relative"
+          @mouseleave="handleLeave"
         >
-          <Category :category="category">
+          <component
+            :is="HighlightedDiv"
+            v-if="HighlightedDiv"
+            class="!bg-card"
+          />
+          <Category
+            v-for="category in channelsStore.getCategoriesAndChannels(
+              guild._id,
+            )"
+            :key="category._id"
+            :category="category"
+          >
             <Channel
               v-for="channel in category.channels"
               :id="channel._id"
               :key="channel._id"
               :channel="channel"
+              class="z-10"
               @mouseenter="handleEnter(channel._id)"
             />
           </Category>
-        </template>
+        </div>
       </div>
     </VerticalTransition>
   </div>

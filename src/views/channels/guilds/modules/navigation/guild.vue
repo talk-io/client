@@ -1,6 +1,6 @@
 <template>
   <div class="bg-secondary flex items-center justify-between">
-    <span class="font-bold">{{ guild?.name }}</span>
+    <span class="font-bold select-none">{{ guild?.name }}</span>
     <Icon class="text-2xl" icon="material-symbols:keyboard-arrow-down-rounded" />
   </div>
 </template>

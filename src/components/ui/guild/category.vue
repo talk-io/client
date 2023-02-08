@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-1">
-    <span class="text-header-secondary font-medium text-lg">{{ category.name }}</span>
+    <span class="text-header-secondary hover:text-white transition-colors font-medium text-lg select-none">{{ category.name }}</span>
     <div class="flex flex-col gap-1">
       <slot />
     </div>
