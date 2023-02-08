@@ -1,10 +1,16 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import type { Channel, Message } from "@/types/auth";
+import type { BasicUser, Channel } from "@/types/auth";
 import { ChannelType } from "@/types/auth";
+import { useGatewayStore } from "@/stores/gateway";
+import { Events } from "@/types/events";
+
+const { USER_TYPING_START, USER_TYPING_END } = Events.ChannelEvents;
 
 export const useChannelsStore = defineStore("channels", () => {
   const channels = ref<Map<string, Array<Channel>>>(new Map());
+  const usersTyping = ref<Map<string, Array<BasicUser>>>(new Map());
+  const gatewayStore = useGatewayStore();
 
   const getCategories = (guildID: string) => {
     const guildChannels = channels.value.get(guildID);
@@ -33,6 +39,23 @@ export const useChannelsStore = defineStore("channels", () => {
     channels.value
       .get(guildID)
       ?.filter((channel) => channel.type !== ChannelType.GUILD_CATEGORY);
+  // const getChannel = (guildID: string, channelID: string) => {
+  //   const guildChannels = channels.value.get(guildID);
+  //   if (!guildChannels) return;
+  //
+  //   const channelIndex = guildChannels.findIndex(
+  //     (channel) => channel._id === channelID,
+  //   );
+  //
+  //   return guildChannels[channelIndex];
+  // };
+
+  const getUsersTyping = (channelID: string) => {
+    const users = usersTyping.value.get(channelID);
+    if (users) return users;
+    usersTyping.value.set(channelID, []);
+    return <Array<BasicUser>>usersTyping.value.get(channelID);
+  };
 
   const setChannels = (guildID: string, fetchedChannels: Array<Channel>) => {
     channels.value.set(
@@ -43,49 +66,64 @@ export const useChannelsStore = defineStore("channels", () => {
       })),
     );
   };
+  const setUserTyping = ({
+    channelID,
+    user,
+  }: {
+    channelID: string;
+    user: BasicUser;
+  }) => {
+    const usersTypingInChannel = getUsersTyping(channelID);
+    const userIDs = usersTypingInChannel.map((usr) => usr._id);
+
+    const hasUser = userIDs.includes(user._id);
+    if (hasUser) return false;
+
+    usersTypingInChannel.push(user);
+  };
+  const removeUserTyping = ({
+    channelID,
+    userID,
+  }: {
+    channelID: string;
+    userID: string;
+  }) => {
+    const usersTypingInChannel = getUsersTyping(channelID);
+    if (!usersTypingInChannel) return;
+
+    const userIndex = usersTypingInChannel.findIndex(
+      (user) => user._id === userID,
+    );
+    if (userIndex === -1) return;
+    usersTypingInChannel.splice(userIndex, 1);
+  };
+
+  const emitUserTyping = (channelID: string) => {
+    const socket = gatewayStore.getSocket;
+    if (!socket) return;
+
+    socket.emit(USER_TYPING_START, channelID);
+  };
+
+  const emitUserStopTyping = (channelID: string) => {
+    const socket = gatewayStore.getSocket;
+    if (!socket) return;
+
+    socket.emit(USER_TYPING_END, channelID);
+  };
 
   return {
     getChannels,
     getCategories,
     getChannelsInCategory,
     getCategoriesAndChannels,
+    getUsersTyping,
 
     setChannels,
+    setUserTyping,
+    removeUserTyping,
+
+    emitUserTyping,
+    emitUserStopTyping,
   };
 });
-
-// const fakeMessages = (guildID: string, channelID: string): Array<Message> =>
-//   [...Array(5)].map((_, idx) => ({
-//     id: idx + 1 + "",
-//     authorID: "1",
-//     content: `Message #${idx + 1}`,
-//     channelID: channelID,
-//     guildID: guildID,
-//     author: {
-//       id: "1",
-//       name: "weee",
-//     },
-//   }));
-
-// const fakeChannels = new Map(
-//   [...Array(10)].map((_, idx) => {
-//     const id: string = idx + 1 + "";
-//     return [
-//       id,
-//       [
-//         {
-//           id: "1",
-//           name: "general",
-//           guildID: id,
-//           messages: fakeMessages(id, "1"),
-//         },
-//         {
-//           id: "2",
-//           name: "random",
-//           guildID: id,
-//           messages: fakeMessages(id, "2"),
-//         },
-//       ],
-//     ];
-//   }),
-// );

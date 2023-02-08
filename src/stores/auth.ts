@@ -56,21 +56,14 @@ export const useAuthStore = defineStore("authStore", () => {
         extraHeaders: {
           Authorization: `Bearer ${token}`,
         },
+        timeout: 5000,
       });
 
-      // socket.io.on("close", (wee) => {
-      //   console.log({wee});
-      //   // resetState();
-      //   // router.push({ name: "login" });
-      //   // setLoading(false);
-      // });
-
-      socket.on("connect_error", async (err) => {
-        if (err.message === "Unauthorized") {
-          resetState();
-          await router.push({ name: "login" });
-          setLoading(false);
-        }
+      socket.io.on("close", async (reason) => {
+        if (reason !== "forced close") return;
+        resetState();
+        setLoading(false);
+        await router.push({ name: "login" });
       });
 
       socket.once("init", (data: User) => {
@@ -81,7 +74,6 @@ export const useAuthStore = defineStore("authStore", () => {
         setUser(data);
         setIsLoggedIn(true);
         setLoading(false);
-        socket.removeListener("connect_error");
       });
 
       const gatewayStore = useGatewayStore();
