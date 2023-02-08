@@ -1,5 +1,8 @@
 <template>
-  <div v-if="guild" class="grid grid-cols-[240px_1fr] w-full h-full overflow-y-hidden">
+  <div
+    v-if="guild"
+    class="grid grid-cols-[240px_1fr] w-full h-full overflow-y-hidden"
+  >
     <div class="grid relative">
       <GuildSettings
         :guild="guild"
@@ -13,7 +16,9 @@
         :channel="currentChannel"
         class="w-full px-3 h-12 drop-shadow-lg absolute"
       />
-      <Chat v-if="currentChannel" :channel="currentChannel" class="pt-12" />
+      <KeepAlive>
+        <Chat v-if="currentChannel" :channel="currentChannel" class="pt-12" />
+      </KeepAlive>
       <Members :guild="guild" class="pt-16 px-2" />
     </div>
   </div>
@@ -34,9 +39,9 @@ const route = useRoute();
 const guildStore = useGuildStore();
 
 const guild = computed(() =>
-  guildStore.getGuild(route.params.guildID as string)
+  guildStore.getGuild(route.params.guildID as string),
 );
 const currentChannel = computed(() =>
-  guildStore.getCurrentChannel(route.params.guildID as string)
+  guildStore.getCurrentChannel(route.params.guildID as string),
 );
 </script>

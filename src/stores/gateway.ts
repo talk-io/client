@@ -1,9 +1,14 @@
 import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
 import type { Socket } from "socket.io-client";
+import type {
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from "@/types/events";
 import { Events } from "@/types/events";
 import { useMessagesStore } from "@/stores/messages";
 import { useAuthStore } from "@/stores/auth";
+import { useChannelsStore } from "@/stores/channels";
 
 const {
   GuildUserEvents,
@@ -15,10 +20,11 @@ const {
 
 export const useGatewayStore = defineStore("gatewayStore", () => {
   const messagesStore = useMessagesStore();
+  const channelsStore = useChannelsStore();
   const authStore = useAuthStore();
 
   const state = reactive<{
-    socket: Socket | null;
+    socket: Socket<ServerToClientEvents, ClientToServerEvents> | null;
     userSockets: Record<string, string>;
   }>({
     socket: null,
@@ -45,9 +51,12 @@ export const useGatewayStore = defineStore("gatewayStore", () => {
       authStore.setLoading(false);
     });
 
-    const { MESSAGE_CREATED, MESSAGE_UPDATED, MESSAGE_DELETED, GET_MESSAGES } =
-      MessageEvents;
+    const { MESSAGE_CREATED, MESSAGE_UPDATED, MESSAGE_DELETED } = MessageEvents;
     state.socket.on(MESSAGE_CREATED, messagesStore.addEmittedMessage);
+
+    const { USER_TYPING_START, USER_TYPING_END } = ChannelEvents;
+    state.socket.on(USER_TYPING_START, channelsStore.setUserTyping);
+    state.socket.on(USER_TYPING_END, channelsStore.removeUserTyping);
   };
 
   return {

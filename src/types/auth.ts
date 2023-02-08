@@ -33,6 +33,7 @@ export type Channel = {
   position: number;
   topic?: string;
   nsfw: boolean;
+  usersTyping: Array<BasicUser>;
   messages: Array<Message>;
 };
 

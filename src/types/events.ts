@@ -1,3 +1,5 @@
+import type { Message, BasicUser } from "@/types/auth";
+
 export namespace Events {
   export enum UserEvents {
     INIT = "init",
@@ -26,12 +28,42 @@ export namespace Events {
     CHANNEL_CREATED = "channelCreated",
     CHANNEL_UPDATED = "channelUpdated",
     CHANNEL_DELETED = "channelDeleted",
+    USER_TYPING_START = "userTypingStart",
+    USER_TYPING_END = "userTypingEnd",
   }
 
   export enum MessageEvents {
-    GET_MESSAGES = "getMessages",
     MESSAGE_CREATED = "messageCreated",
     MESSAGE_UPDATED = "messageUpdated",
     MESSAGE_DELETED = "messageDeleted",
   }
+}
+
+export interface ServerToClientEvents {
+  [Events.UserEvents.INIT]: () => void;
+  [Events.MessageEvents.MESSAGE_CREATED]: (message: Message) => void;
+  [Events.ChannelEvents.USER_TYPING_START]: ({
+    channelID,
+    user,
+  }: {
+    channelID: string;
+    user: BasicUser;
+  }) => void;
+  [Events.ChannelEvents.USER_TYPING_END]: ({
+    channelID,
+    userID,
+  }: {
+    channelID: string;
+    userID: string;
+  }) => void;
+}
+
+export interface UserTyping {
+  userID: string;
+  channelID: string;
+}
+
+export interface ClientToServerEvents {
+  [Events.ChannelEvents.USER_TYPING_START]: (channelID: string) => void;
+  [Events.ChannelEvents.USER_TYPING_END]: (channelID: string) => void;
 }

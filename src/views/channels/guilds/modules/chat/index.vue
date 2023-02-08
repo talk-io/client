@@ -4,7 +4,7 @@
     <div
       v-else
       ref="messagesList"
-      class="flex flex-col-reverse gap-3 overflow-y-auto h-full py-8"
+      class="flex flex-col-reverse gap-3 overflow-y-auto h-full py-6"
       @mouseleave="handleLeave"
     >
       <div
@@ -28,22 +28,21 @@
         class="w-full"
         @onMessageCreate="scrollToEnd"
       />
-      <div class="h-7">
-        <span class="px-1">muffins is typing...</span>
-      </div>
+      <UserTyping :channel="channel"/>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
-import Message from "@/components/ui/guild/message.vue";
 import type { Message as MessageType } from "@/types/auth";
-import MessageCreate from "./MessageCreate.vue";
 import { useMessagesStore } from "@/stores/messages";
 import { nextTick, onMounted, ref, watch } from "vue";
 import type { Channel } from "@/types/auth";
 import { useVerticalTransitionAnimation } from "@/composables/useVerticalTransitionAnimation";
+import Message from "@/components/ui/guild/message.vue";
+import MessageCreate from "./modules/MessageCreate.vue";
+import UserTyping from "./modules/UserTyping.vue";
 
 const messagesList = ref<HTMLDivElement>();
 
