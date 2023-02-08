@@ -51,7 +51,7 @@ const HighlightedDiv = defineComponent(() => {
       style: highlightedStyles,
       "aria-hidden": "true",
       class:
-        "bg-secondary-light brightness-110 rounded-md transition-all absolute top-0 select-none z-10",
+        "bg-secondary-light brightness-110 rounded-md transition-all absolute top-0 select-none -z-0",
     });
   };
 });

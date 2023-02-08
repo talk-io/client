@@ -18,13 +18,12 @@
           v-for="category in channelsStore.getCategoriesAndChannels(guild._id)"
           :key="category._id"
         >
-          <Category :category="category" class="z-20">
+          <Category :category="category">
             <Channel
               v-for="channel in category.channels"
               :id="channel._id"
               :key="channel._id"
               :channel="channel"
-              class="z-20"
               @mouseenter="handleEnter(channel._id)"
             />
           </Category>

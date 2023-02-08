@@ -21,7 +21,7 @@
           :id="message._id"
           :key="message._id"
           :message="message"
-          class="z-20"
+          class="z-0"
           @mouseenter="handleEnter(message._id)"
         />
       </div>

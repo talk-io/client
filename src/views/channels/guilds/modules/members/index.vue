@@ -23,7 +23,6 @@
             :id="member._id"
             :key="member._id"
             :user="member"
-            class="z-20"
             @mouseenter="handleEnter(member._id)"
           />
         </ul>
