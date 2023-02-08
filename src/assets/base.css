@@ -45,6 +45,7 @@ body {
     font-family: "Source Sans Pro", sans-serif;
     background-color: #1e2124;
     color: white;
+    position: relative;
 }
 
 .fade-enter-active,

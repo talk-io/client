@@ -18,11 +18,10 @@
         <component :is="HighlightedDiv"  v-if="HighlightedDiv"/>
         <Message
           v-for="message in messages"
-          :id="message._id"
           :key="message._id"
           :message="message"
           class="z-0"
-          @mouseenter="handleEnter(message._id)"
+          @mouseenter="handleEnter"
         />
       </div>
     </VerticalTransition>

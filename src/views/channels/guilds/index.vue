@@ -6,9 +6,9 @@
     <div class="grid relative">
       <GuildSettings
         :guild="guild"
-        class="w-full px-3 h-12 drop-shadow-lg absolute"
+        class="w-full px-3 h-12 drop-shadow-lg"
       />
-      <Channels :guild="guild" class="pt-16 px-3" />
+      <Channels :guild="guild" class="pt-4 px-3" />
     </div>
     <div class="grid grid-cols-[1fr_240px] relative">
       <ChannelSettings

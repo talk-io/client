@@ -10,10 +10,7 @@
       :additionalSpace="16 * 4"
     >
       <div class="h-screen overflow-y-auto">
-        <div
-          class="flex flex-col gap-3 relative"
-          @mouseleave="handleLeave"
-        >
+        <div class="flex flex-col gap-3 relative" @mouseleave="handleLeave">
           <component
             :is="HighlightedDiv"
             v-if="HighlightedDiv"
@@ -28,11 +25,10 @@
           >
             <Channel
               v-for="channel in category.channels"
-              :id="channel._id"
               :key="channel._id"
               :channel="channel"
               class="z-10"
-              @mouseenter="handleEnter(channel._id)"
+              @mouseenter="handleEnter"
             />
           </Category>
         </div>
@@ -48,7 +44,6 @@ import { useChannelsStore } from "@/stores/channels";
 import Category from "@/components/ui/guild/category.vue";
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useVerticalTransitionAnimation } from "@/composables/useVerticalTransitionAnimation";
 import VerticalTransition from "@/components/animations/VerticalTransition.vue";
 
 const route = useRoute();

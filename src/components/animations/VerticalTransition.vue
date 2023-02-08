@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineComponent, h, reactive, ref } from "vue";
+import { defineComponent, h, reactive, ref } from "vue";
 
 const props = defineProps<{
   additionalSpace?: number;
@@ -21,9 +21,11 @@ const highlightedStyles = reactive({
 });
 const isVisible = ref(false);
 
-const handleEnter = (id: string) => {
-  const linkElement = document.getElementById(id) as HTMLLIElement;
-  const linkCoords = linkElement.getBoundingClientRect();
+const handleEnter = (e: MouseEvent) => {
+  const target = e?.target as HTMLElement;
+  if(target.tagName === "HR") return;
+
+  const linkCoords = target.getBoundingClientRect();
   const height = linkCoords.top - (props.additionalSpace ?? 0);
 
   highlightedStyles["height"] = `${linkCoords.height}px`;

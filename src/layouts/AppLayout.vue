@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full h-screen">
+  <div class="flex w-full h-screen relative">
     <NavigationBar />
     <RouterView v-slot="{Component}">
       <template v-if="Component">

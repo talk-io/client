@@ -5,7 +5,7 @@
         <DefaultLayout v-if="authStore.getLoading">
           <ScaleLoader color="#CD5A41" />
         </DefaultLayout>
-        <component :is="Component" v-else class="absolute w-full" />
+        <component :is="Component" v-else class="relative w-full" />
       </div>
 
       <template #fallback>Loading...</template>

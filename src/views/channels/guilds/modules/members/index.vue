@@ -16,14 +16,14 @@
         >
           MEMBERS &dash; {{ members.length }}
         </span>
-        <ul class="flex flex-col" @mouseleave="handleLeave">
+        <ul ref="membersRef" class="flex flex-col" @mouseenter="logEvent" @mouseleave="handleLeave">
           <component :is="HighlightedDiv" v-if="HighlightedDiv" class="!bg-card" />
           <Member
             v-for="member in members"
-            :id="member._id"
             :key="member._id"
             :user="member"
-            @mouseenter="handleEnter(member._id)"
+            @mouseenter="handleEnter"
+            @mouseover.self="log"
           />
         </ul>
       </VerticalTransition>
@@ -41,6 +41,10 @@ import VerticalTransition from "@/components/animations/VerticalTransition.vue";
 const props = defineProps<{
   guild: Guild;
 }>();
+
+const membersRef = ref<HTMLUListElement>();
+
+const log = (a) => console.log(a.target.getBoundingClientRect())
 
 const membersStore = useMembersStore();
 const members_title = ref<HTMLSpanElement>();

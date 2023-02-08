@@ -18,10 +18,10 @@ module.exports = {
         "header-secondary": "rgb(185, 187, 190)",
         "header-description": "#B9BBBE",
         label: "#ccc",
+        primary: "#a29bfe",
       },
       backgroundColor: {
         card: "#36393f",
-        primary: "#5A20CB",
         "logo-back": "#D5CBA7",
       },
       borderColor: {
