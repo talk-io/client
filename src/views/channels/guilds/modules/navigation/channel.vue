@@ -6,10 +6,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { Icon } from "@iconify/vue";
-  import type { Channel } from "@/types/auth";
+import { Icon } from "@iconify/vue";
+import type { Channel } from "@/types/auth";
 
-  defineProps<{
-    channel: Channel;
-  }>();
+defineProps<{
+  channel: Channel;
+}>();
 </script>

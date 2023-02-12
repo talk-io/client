@@ -19,13 +19,13 @@ module.exports = {
         "header-description": "#B9BBBE",
         label: "#ccc",
         primary: "#a29bfe",
+        card: "#36393f",
+        tooltip: "rgba(32,34,37,0.9)",
       },
       backgroundColor: {
-        card: "#36393f",
         "logo-back": "#D5CBA7",
       },
       borderColor: {
-        card: "#4c4c4c",
         hr: "rgba(76,76,76,0.44)",
       },
       fontFamily: {

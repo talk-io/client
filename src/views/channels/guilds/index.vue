@@ -1,25 +1,21 @@
 <template>
-  <div
-    v-if="guild"
-    class="grid grid-cols-[240px_1fr] w-full h-full overflow-y-hidden"
-  >
-    <div class="grid relative">
-      <GuildSettings
-        :guild="guild"
-        class="w-full px-3 h-12 drop-shadow-lg"
-      />
-      <Channels :guild="guild" class="pt-4 px-3" />
+  <div v-if="guild" class="flex w-full h-screen overflow-y-hidden">
+    <div class="flex w-72 h-screen flex-col">
+      <GuildSettings :name="guild.name" class="w-full py-3 px-3 drop-shadow-lg" />
+      <Channels class="pt-4 px-3" />
     </div>
-    <div class="grid grid-cols-[1fr_240px] relative">
+    <div class="flex flex-col w-full relative">
       <ChannelSettings
         v-if="currentChannel"
         :channel="currentChannel"
-        class="w-full px-3 h-12 drop-shadow-lg absolute"
+        class="w-full px-3 py-3 drop-shadow-lg absolute"
       />
-      <KeepAlive>
-        <Chat v-if="currentChannel" :channel="currentChannel" class="pt-12" />
-      </KeepAlive>
-      <Members :guild="guild" class="pt-16 px-2" />
+      <div class="flex w-full">
+        <KeepAlive>
+          <Chat v-if="currentChannel" :channel="currentChannel" class="pt-12" />
+        </KeepAlive>
+        <Members :guild="guild" class="pt-16 px-2 w-72" />
+      </div>
     </div>
   </div>
 </template>

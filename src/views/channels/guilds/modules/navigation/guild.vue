@@ -1,15 +1,14 @@
 <template>
   <div class="bg-secondary flex items-center justify-between">
-    <span class="font-bold select-none">{{ guild?.name }}</span>
+    <span class="font-bold select-none">{{ name }}</span>
     <Icon class="text-2xl" icon="material-symbols:keyboard-arrow-down-rounded" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { Icon } from "@iconify/vue";
-import type { Guild } from "@/types/auth";
 
 defineProps<{
-  guild: Guild;
+  name: string;
 }>();
 </script>
