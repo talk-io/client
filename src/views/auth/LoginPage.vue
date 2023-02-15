@@ -98,8 +98,11 @@ const login = async () => {
     const response = await submitForm<Partial<LoginResponse>>();
     if (!response) return;
 
-    await authStore.init(response.token);
-    await router.push({ name: "me" });
+    const isNotLoggedIn = await authStore.init(response.token);
+    if(!isNotLoggedIn) {
+      await router.push({ name: "me" });
+      authStore.setLoading(false);
+    }
 
     // return authStore.setLoading(false);
   } catch (e) {

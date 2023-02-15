@@ -15,12 +15,15 @@ const props = defineProps<{
 
 const channelsStore = useChannelsStore();
 
-const currentlyTyping = computed(() => channelsStore.getUsersTyping(props.channel._id))
+const currentlyTyping = computed(() =>
+  channelsStore.getUsersTyping(props.channel._id),
+);
+
+const lf = new Intl.ListFormat('en');
+
 const text = computed(() => {
-  return currentlyTyping.value.length === 1
-    ? `${currentlyTyping.value[0].username} is typing...`
-    : `${currentlyTyping.value[0].username} and ${
-        currentlyTyping.value.length - 1
-      } others are typing...`;
+  const names = lf.format(currentlyTyping.value.map((user) => user.username));
+  const isManyTyping = currentlyTyping.value.length > 1;
+  return `${names} ${isManyTyping ? 'are' : 'is'} typing...`;
 });
 </script>

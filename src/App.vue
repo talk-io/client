@@ -1,11 +1,13 @@
 <template>
   <RouterView v-slot="{ Component }">
     <Suspense>
-      <div id="wrapper" v-auto-animate>
-        <DefaultLayout v-if="authStore.getLoading">
-          <ScaleLoader color="#CD5A41" />
-        </DefaultLayout>
-        <component :is="Component" v-else class="w-full" />
+      <div id="wrapper">
+        <Transition mode="out-in" name="main">
+          <DefaultLayout v-if="authStore.getLoading">
+            <ScaleLoader color="#CD5A41" />
+          </DefaultLayout>
+          <component :is="Component" v-else class="w-full" />
+        </Transition>
       </div>
 
       <template #fallback>Loading...</template>

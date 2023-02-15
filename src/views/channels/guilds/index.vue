@@ -8,7 +8,7 @@
       <ChannelSettings
         v-if="currentChannel"
         :channel="currentChannel"
-        class="w-full px-3 py-3 drop-shadow-lg absolute"
+        class="w-full px-3 py-2.5 drop-shadow-lg absolute"
       />
       <div class="flex w-full">
         <KeepAlive>

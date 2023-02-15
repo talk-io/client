@@ -53,6 +53,7 @@ router.beforeEach(async (to, from, next) => {
     const showLogin = await authStore.init();
     if (showLogin) return next({ name: "login" });
   }
+  if (from.name !== "login") authStore.setLoading(false);
 
   const context = {
     to,

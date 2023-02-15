@@ -57,6 +57,15 @@ body {
 .fade-leave-to {
     opacity: 0;
 }
+.main-enter-active,
+.main-leave-active {
+    transition: opacity 0.1s ease-in-out;
+}
+
+.main-enter-from,
+.main-leave-to {
+    opacity: 0;
+}
 
 .slide-up-enter-active,
 .slide-up-leave-active {
