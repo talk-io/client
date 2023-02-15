@@ -23,7 +23,6 @@
             :key="member._id"
             :user="member"
             @mouseenter="handleEnter"
-            @mouseover.self="log"
           />
         </ul>
       </VerticalTransition>
@@ -43,8 +42,6 @@ const props = defineProps<{
 }>();
 
 const membersRef = ref<HTMLUListElement>();
-
-const log = (a) => console.log(a.target.getBoundingClientRect())
 
 const membersStore = useMembersStore();
 const members_title = ref<HTMLSpanElement>();

@@ -30,7 +30,6 @@ export const useChannelsStore = defineStore("channels", () => {
   };
   const getCategoriesAndChannels = (guildID: string) => {
     const categories = getCategories(guildID);
-    console.log({ categories });
     return categories.map((category) => ({
       ...category,
       channels: getChannelsInCategory(guildID, category._id),

@@ -60,7 +60,7 @@
     <span
       v-if="isHovering"
       :style="tooltipStyle"
-      class="absolute whitespace-nowrap w-fit origin-left font-medium transition-all z-50 bg-tooltip rounded-lg px-4 py-2 after:absolute after:top-1/2 after:-translate-y-1.5 after:-left-3 after:border-[6px] after:border-solid after:border-[transparent_#202225_transparent_transparent]"
+      class="absolute whitespace-nowrap drop-shadow-lg backdrop-blur-2xl text-lg w-fit origin-left font-medium transition-all z-50 bg-tooltip rounded-lg px-3 py-1.5 after:absolute after:top-1/2 after:-translate-y-3 after:-left-5 after:border-[12px] after:border-solid after:border-[transparent_#202225_transparent_transparent]"
     >
       {{ currentTooltip }}
     </span>
@@ -121,7 +121,6 @@ const tooltipStyle = ref({
 });
 
 const onHover = (tooltip: string, event: MouseEvent) => {
-  console.log({ event });
   const target = event.target as HTMLSpanElement;
   const rect = target.getBoundingClientRect();
   tooltipStyle.value = {

@@ -5,24 +5,29 @@
         handleEnter,
         handleLeave,
 
-        HighlightedDiv
+        HighlightedDiv,
       }"
     >
       <div v-if="messagesFetching" class="w-10 h-10 bg-red-500" />
       <div
         v-else
         ref="messagesList"
-        class="flex flex-col-reverse gap-3 overflow-y-auto h-full py-6"
+        class="flex flex-col-reverse overflow-y-auto h-full py-6"
         @mouseleave="handleLeave"
       >
-        <component :is="HighlightedDiv"  v-if="HighlightedDiv"/>
-        <Message
-          v-for="message in messages"
-          :key="message._id"
-          :message="message"
-          class="z-0"
-          @mouseenter="handleEnter"
-        />
+        <component :is="HighlightedDiv" v-if="HighlightedDiv" />
+        <template v-for="(message, idx) in messages" :key="message._id || idx">
+          <Message
+            :lastAuthor="messages[idx + 1]?.author._id || null"
+            :message="message"
+            class="z-0"
+            @mouseenter="handleEnter"
+          />
+          <div
+            v-if="messages[idx + 1]?.author._id !== message.author._id"
+            class="my-1"
+          />
+        </template>
       </div>
     </VerticalTransition>
     <div class="flex flex-col h-24 mx-chat">
@@ -56,7 +61,7 @@ defineProps<{
 const route = useRoute();
 
 const messagesStore = useMessagesStore();
-let messages = ref<Array<MessageType>>();
+const messages = ref<Array<MessageType>>();
 
 const messagesFetching = ref(false);
 
@@ -66,6 +71,7 @@ const fetchMessages = async () => {
     messages.value = await messagesStore.getMessages(
       route.params.channelID as string,
     );
+    console.log({ wee: messages.value });
   } catch (e) {
     console.log(e);
   } finally {

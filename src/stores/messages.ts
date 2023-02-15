@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import type { Message } from "@/types/auth";
+import type { AuthorWithMessages, Message } from "@/types/auth";
 import { Message as MessageService } from "@/constants/apiRoutes";
 import { useAuthStore } from "@/stores/auth";
 import { service } from "@/utils/service";
@@ -12,6 +12,7 @@ export const useMessagesStore = defineStore("messagesStore", () => {
 
   const _fetchMessages = async (channelID: string) => {
     const fetchedMessages = await MessageService.GET(channelID);
+    // const modifiedMessages = _combineMessages(fetchedMessages);
     messages.value.set(channelID, fetchedMessages);
   };
 
@@ -32,7 +33,50 @@ export const useMessagesStore = defineStore("messagesStore", () => {
     const userID = authStore.getState.user?._id;
     if (userID === payload.authorID) return;
     channelMessages.unshift(payload);
+    // addMessage(payload);
   };
+
+  const _combineMessages = (messages: Message[]): AuthorWithMessages[] => {
+    return messages.reduce((result: AuthorWithMessages[], message: Message) => {
+      const lastMessage = result[result.length - 1];
+      if (
+        lastMessage &&
+        lastMessage.authorID === message.authorID &&
+        lastMessage.messages.length < 5
+      ) {
+        lastMessage.messages.push(message);
+      } else {
+        result.push({
+          _id: nanoid(),
+          authorID: message.authorID,
+          author: message.author,
+          messages: [message],
+        });
+      }
+      return result;
+    }, []);
+  };
+
+  // const addMessage = (payload: Message) => {
+  //   const channelMessages = messages.value.get(payload.channelID);
+  //   if (!channelMessages) return;
+  //
+  //   const lastMessage = channelMessages[channelMessages.length - 1];
+  //   const isLastMessageAndSameAuthorAndNotFull =
+  //     lastMessage &&
+  //     lastMessage.authorID === payload.authorID &&
+  //     lastMessage.messages.length < 5;
+  //   if (isLastMessageAndSameAuthorAndNotFull) {
+  //     lastMessage.messages.push(payload);
+  //   } else {
+  //     channelMessages.push({
+  //       _id: nanoid(),
+  //       authorID: payload.authorID,
+  //       author: payload.author,
+  //       messages: [payload],
+  //     });
+  //   }
+  // };
 
   const createMessage = async (payload: {
     content: string;
@@ -48,6 +92,8 @@ export const useMessagesStore = defineStore("messagesStore", () => {
       content: payload.content,
       author: user,
     };
+
+    // addMessage(<Message>loadingMsg.value);
     channelMessages.unshift(<Message>loadingMsg);
 
     try {
@@ -55,6 +101,7 @@ export const useMessagesStore = defineStore("messagesStore", () => {
         MessageService.SEND(payload.channelID),
         payload,
       );
+
       const idx = channelMessages.findIndex(
         (msg) => msg._id === loadingMsg._id,
       );
@@ -63,14 +110,6 @@ export const useMessagesStore = defineStore("messagesStore", () => {
       console.log(error);
     }
   };
-
-  // const getMessages = async (channelID: string): Promise<Array<Message>> => {
-  //   const messagesInChannel = messages.value.get(channelID);
-  //   if (!messagesInChannel) {
-  //     await _fetchMessages(channelID);
-  //   }
-  //   return messagesInChannel || [];
-  // };
 
   return {
     getMessages,

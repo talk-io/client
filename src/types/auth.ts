@@ -16,6 +16,13 @@ export interface Message {
   guildID: string;
 }
 
+export interface AuthorWithMessages {
+  _id: string;
+  authorID: string;
+  author: BasicUser;
+  messages: Array<Message>;
+}
+
 export enum ChannelType {
   DM,
   GROUP_DM,
