@@ -1,17 +1,17 @@
 <template>
   <button
-      class="w-full bg-card py-2 rounded-md hover:brightness-125 transition-all
-      disabled:opacity-50 disabled:cursor-not-allowed"
       :class="{
-          'bg-primary': type === 'primary',
+          'bg-logo-text': type === 'primary',
         }"
       :type="htmlType"
+      class="w-full bg-card py-2 rounded-md hover:brightness-125 transition-all
+      disabled:opacity-50 disabled:cursor-not-allowed"
   >
     <slot/>
   </button>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 defineProps<{
   type?: string;
   htmlType?: string;

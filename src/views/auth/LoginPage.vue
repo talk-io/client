@@ -3,9 +3,9 @@
     <template #title>
       <h1 class="text-xl font-logo font-semibold">talkio.</h1>
       <h2 class="text-3xl font-medium">Sign In</h2>
-      <span class="text-header-description"
-      >We're excited to have you back!</span
-      >
+      <span class="text-header-description">
+        We're excited to have you back!
+      </span>
     </template>
     <form class="flex flex-col gap-5 w-full">
       <FormItem
@@ -73,22 +73,22 @@ const {
   v$,
   loading,
 
-  submitForm
+  submitForm,
 } = useForm({
   rules: computed<ValidationArgs>(() => ({
     email: {
       required,
-      email
+      email,
     },
     password: {
-      required
-    }
+      required,
+    },
   })),
   url: Auth.login,
   model: reactive({
     email: "asdf@asdf.com",
-    password: "a1B@asdf"
-  })
+    password: "a1B@asdf",
+  }),
 });
 
 const router = useRouter();
@@ -99,12 +99,6 @@ const login = async () => {
     if (!response) return;
 
     await authStore.init(response.token);
-    // authStore.setLoading(true);
-    //
-    // authStore.setToken(response.token as string);
-    // delete response.token;
-    //
-    // authStore.setIsLoggedIn(true);
     await router.push({ name: "me" });
 
     // return authStore.setLoading(false);

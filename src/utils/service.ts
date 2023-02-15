@@ -10,10 +10,13 @@ service.interceptors.request.use(
   (config) => {
     const authStore = useAuthStore();
 
-    config.headers = {
-      Authorization: `Bearer ${authStore.getToken}`,
-      Accept: "application/json",
-    };
+    // config.headers = {
+    //   Authorization: `Bearer ${authStore.getToken}`,
+    //   Accept: "application/json",
+    // };
+
+    config.headers["Authorization"] = `Bearer ${authStore.getToken}`;
+    config.headers["Accept"] = "application/json";
 
     return config;
   },

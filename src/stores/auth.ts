@@ -38,7 +38,7 @@ export const useAuthStore = defineStore("authStore", () => {
     (state.isLoggedIn = isLoggedIn);
   const setLoading = (loading: boolean) => (state.loading = loading);
 
-  const resetState = () => {
+  const resetState = (): false => {
     state.user = {};
     state.token = null;
     state.isLoggedIn = null;
@@ -46,7 +46,7 @@ export const useAuthStore = defineStore("authStore", () => {
     setLoading(false);
     return false;
   };
-  const init = async (newToken?: string) => {
+  const init = async (newToken?: string): Promise<boolean> => {
     setLoading(true);
     try {
       const token = newToken || getToken.value;
@@ -63,28 +63,32 @@ export const useAuthStore = defineStore("authStore", () => {
         if (reason !== "forced close") return;
         resetState();
         setLoading(false);
-        await router.push({ name: "login" });
+        return true;
       });
 
-      socket.once("init", (data: User) => {
-        const { guilds } = data;
-        guildsStore.setGuilds(guilds);
+      await new Promise((res) =>
+        socket.once("init", (data: User) => {
+          const { guilds } = data;
+          guildsStore.setGuilds(guilds);
 
-        setToken(token);
-        setUser(data);
-        setIsLoggedIn(true);
-        setLoading(false);
-      });
+          setUser(data);
+          setToken(token);
+          setIsLoggedIn(true);
+          setLoading(false);
+          res(false);
+        }),
+      );
 
       const gatewayStore = useGatewayStore();
       gatewayStore.setSocket(socket);
       gatewayStore.addListeners();
 
-      // state.user = await service.get<never, User>(Auth.me);
+      return false;
     } catch (e) {
       console.log(e);
       resetState();
     }
+    return false;
   };
   const login = async (email: string, password: string) => {
     try {
