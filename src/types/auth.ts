@@ -14,6 +14,8 @@ export interface Message {
   channel: Channel;
   channelID: string;
   guildID: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface AuthorWithMessages {

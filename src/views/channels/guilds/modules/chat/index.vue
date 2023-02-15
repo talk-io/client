@@ -71,7 +71,6 @@ const fetchMessages = async () => {
     messages.value = await messagesStore.getMessages(
       route.params.channelID as string,
     );
-    console.log({ wee: messages.value });
   } catch (e) {
     console.log(e);
   } finally {

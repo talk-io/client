@@ -33,50 +33,7 @@ export const useMessagesStore = defineStore("messagesStore", () => {
     const userID = authStore.getState.user?._id;
     if (userID === payload.authorID) return;
     channelMessages.unshift(payload);
-    // addMessage(payload);
   };
-
-  const _combineMessages = (messages: Message[]): AuthorWithMessages[] => {
-    return messages.reduce((result: AuthorWithMessages[], message: Message) => {
-      const lastMessage = result[result.length - 1];
-      if (
-        lastMessage &&
-        lastMessage.authorID === message.authorID &&
-        lastMessage.messages.length < 5
-      ) {
-        lastMessage.messages.push(message);
-      } else {
-        result.push({
-          _id: nanoid(),
-          authorID: message.authorID,
-          author: message.author,
-          messages: [message],
-        });
-      }
-      return result;
-    }, []);
-  };
-
-  // const addMessage = (payload: Message) => {
-  //   const channelMessages = messages.value.get(payload.channelID);
-  //   if (!channelMessages) return;
-  //
-  //   const lastMessage = channelMessages[channelMessages.length - 1];
-  //   const isLastMessageAndSameAuthorAndNotFull =
-  //     lastMessage &&
-  //     lastMessage.authorID === payload.authorID &&
-  //     lastMessage.messages.length < 5;
-  //   if (isLastMessageAndSameAuthorAndNotFull) {
-  //     lastMessage.messages.push(payload);
-  //   } else {
-  //     channelMessages.push({
-  //       _id: nanoid(),
-  //       authorID: payload.authorID,
-  //       author: payload.author,
-  //       messages: [payload],
-  //     });
-  //   }
-  // };
 
   const createMessage = async (payload: {
     content: string;
