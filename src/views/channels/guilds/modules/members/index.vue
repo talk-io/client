@@ -14,9 +14,9 @@
           ref="members_title"
           class="text-header-secondary font-medium text-base px-3 select-none"
         >
-          MEMBERS &dash; {{ members.length }}
+          OFFLINE &dash; {{ members.length }}
         </span>
-        <ul ref="membersRef" class="flex flex-col" @mouseenter="logEvent" @mouseleave="handleLeave">
+        <ul ref="membersRef" class="flex flex-col" @mouseleave="handleLeave">
           <component :is="HighlightedDiv" v-if="HighlightedDiv" class="!bg-card" />
           <Member
             v-for="member in members"

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col w-full h-screen">
+  <div class="grid grid-rows-[1fr_8rem] w-full h-full">
     <VerticalTransition
       v-slot="{
         handleEnter,
@@ -32,7 +32,7 @@
         </template>
       </div>
     </VerticalTransition>
-    <div class="flex flex-col h-24 mx-chat">
+    <div class="flex flex-col mx-chat">
       <MessageCreate
         :channel="channel"
         class="w-full"

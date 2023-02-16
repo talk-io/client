@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex h-14 items-center bg-message-create-back rounded-lg gap-3 px-5"
+    class="flex h-14 items-center bg-message-create-back rounded-lg drop-shadow-2xl gap-3 px-5"
   >
     <Icon icon="ep:circle-plus-filled" />
     <input
@@ -40,7 +40,7 @@ const submit = async () => {
   message.value = "";
   await messagesStore.createMessage({
     content: msg,
-    channelID: props.channel._id
+    channelID: props.channel._id,
   });
   emits("onMessageCreate");
   channelsStore.emitUserStopTyping(props.channel._id);
