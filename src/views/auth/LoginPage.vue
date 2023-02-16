@@ -74,6 +74,7 @@ const {
   loading,
 
   submitForm,
+  errors,
 } = useForm({
   rules: computed<ValidationArgs>(() => ({
     email: {
@@ -95,6 +96,7 @@ const router = useRouter();
 
 const login = async () => {
   try {
+    console.log({wee: v$.value});
     const response = await submitForm<Partial<LoginResponse>>();
     if (!response) return;
 
@@ -106,7 +108,7 @@ const login = async () => {
 
     // return authStore.setLoading(false);
   } catch (e) {
-    console.log(e);
+    console.log({ e });
   }
 };
 </script>

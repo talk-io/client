@@ -3,7 +3,6 @@ import { useVuelidate } from "@vuelidate/core";
 import type { ComputedRef } from "vue";
 import { ref } from "vue";
 import { service } from "@/utils/service";
-import { AxiosError } from "axios";
 
 export const useForm = <T>({
   rules,
@@ -17,7 +16,7 @@ export const useForm = <T>({
   const loading = ref(false);
   const record = ref(model ?? {});
   const v$ = useVuelidate(rules, record);
-  const errors = ref();
+  const errors = ref<{ [x: string]: string }>();
 
   const submitForm = async <T>() => {
     try {
@@ -29,7 +28,7 @@ export const useForm = <T>({
       const res = await service.post<never, T>(url, record.value);
       return res;
     } catch (e) {
-      if (e instanceof AxiosError) errors.value = e.response?.data;
+      errors.value = e as { [x: string]: string };
     } finally {
       loading.value = false;
     }

@@ -30,6 +30,8 @@ export const useMessagesStore = defineStore("messagesStore", () => {
     const channelMessages = messages.value.get(payload.channelID);
     if (!channelMessages) return;
 
+    console.log({ payload });
+
     const userID = authStore.getState.user?._id;
     if (userID === payload.authorID) return;
     channelMessages.unshift(payload);

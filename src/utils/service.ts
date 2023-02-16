@@ -47,6 +47,6 @@ service.interceptors.response.use(
         message:
           "Connections to the guild failed. Check your network connection or try again later.",
       });
-    return Promise.reject(error.response?.data);
+    throw error.response?.data;
   },
 );

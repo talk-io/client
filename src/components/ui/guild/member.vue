@@ -1,7 +1,7 @@
 <template>
   <li class="flex items-center gap-2.5 hover:brightness-110 px-2 py-1 rounded-md cursor-pointer transition-all">
     <Icon class="text-4.5xl text-header-secondary" icon="mdi:face-man-profile" />
-    <span class="font-medium text-lg">
+    <span class="font-medium text-lg select-none">
       {{ user.username }}
     </span>
   </li>

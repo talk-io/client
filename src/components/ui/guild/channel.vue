@@ -41,7 +41,6 @@ const props = defineProps<{
 }>();
 
 const icon = computed(() => {
-  console.log({wee: props.channel.type});
   if (props.channel.type === ChannelType.GUILD_VOICE)
     return "wpf:speaker";
   return "octicon:hash-16";

@@ -10,26 +10,31 @@ import { useRouter } from "vue-router";
 
 export const useAuthStore = defineStore("authStore", () => {
   const guildsStore = useGuildStore();
-  const router = useRouter();
 
   const state = reactive<{
     user: Partial<BasicUser>;
     token: string | null;
     isLoggedIn: boolean | null;
     loading: boolean;
+    connectionError: boolean;
   }>({
     user: {},
     token: localStorage.getItem(import.meta.env.VITE_TOKEN_KEY) || null,
     isLoggedIn: null,
     loading: true,
+    connectionError: false,
   });
 
   const getToken = computed(() => state.token);
   const getState = computed(() => state);
   const getIsLoggedIn = computed(() => state.isLoggedIn);
   const getLoading = computed(() => state.loading);
+  const getConnectionError = computed(() => state.connectionError);
 
   const setUser = (user: Partial<User>) => (state.user = user);
+  const setConnectionError = (connectionError: boolean) => {
+    state.connectionError = connectionError;
+  };
   const setToken = (token: string) => {
     state.token = token;
     localStorage.setItem(import.meta.env.VITE_TOKEN_KEY, token);
@@ -57,6 +62,7 @@ export const useAuthStore = defineStore("authStore", () => {
           Authorization: `Bearer ${token}`,
         },
         timeout: 5000,
+        secure: true,
       });
 
       socket.io.on("close", async (reason) => {
@@ -110,6 +116,7 @@ export const useAuthStore = defineStore("authStore", () => {
     getState,
     getIsLoggedIn,
     getLoading,
+    getConnectionError,
 
     init,
     login,
@@ -118,5 +125,6 @@ export const useAuthStore = defineStore("authStore", () => {
     resetState,
     setLoading,
     setIsLoggedIn,
+    setConnectionError,
   };
 });

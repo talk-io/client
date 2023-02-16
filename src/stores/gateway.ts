@@ -45,10 +45,12 @@ export const useGatewayStore = defineStore("gatewayStore", () => {
 
     state.socket.on("connect_error", () => {
       authStore.setLoading(true);
+      authStore.setConnectionError(true);
     });
 
     state.socket.on("connect", () => {
       authStore.setLoading(false);
+      authStore.setConnectionError(false);
     });
 
     const { MESSAGE_CREATED, MESSAGE_UPDATED, MESSAGE_DELETED } = MessageEvents;

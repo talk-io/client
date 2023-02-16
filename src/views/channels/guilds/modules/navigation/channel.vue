@@ -1,7 +1,7 @@
 <template>
   <div class="bg-card flex gap-2 px-6 items-center">
     <Icon class="text-lg" icon="octicon:hash-16" />
-    <span class="text-lg font-semibold">{{ channel.name }}</span>
+    <span class="text-lg font-semibold select-none">{{ channel.name }}</span>
   </div>
 </template>
 
