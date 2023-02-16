@@ -15,7 +15,7 @@
                   Sit tight while we are trying to connect
                 </span>
               </div>
-              <h2 v-else class="text-xl">Loading your App</h2>
+              <h2 v-else class="text-lg">Loading your App</h2>
             </div>
           </DefaultLayout>
           <component :is="Component" v-else class="w-full" />

@@ -1,11 +1,9 @@
 <template>
   <div class="px-chat w-full group">
-    <div
-      v-if="lastAuthor === message.author._id"
-      class="flex items-center gap-2 w-full py-0.5"
-    >
-      <span class="text-header-secondary w-12 text-sm opacity-0 group-hover:opacity-100 transition-opacity"
-        >{{date.format(MESSAGE)}}</span
+    <div v-if="showOnlyMessage" class="flex items-center gap-2 w-full py-0.5">
+      <span
+        class="text-header-secondary w-14 text-sm opacity-0 group-hover:opacity-100 transition-opacity"
+        >{{ date.format(MESSAGE) }}</span
       >
       <p>{{ message.content }}</p>
     </div>
@@ -19,17 +17,18 @@
       @mouseleave="isHovered = false"
     >
       <Icon
-        class="text-5xl text-header-secondary"
+        class="text-5xl w-14 text-header-secondary"
         icon="mdi:face-man-profile"
       />
       <div class="flex flex-col">
         <div class="flex items-center gap-2">
-          <h3 class="font-semibold text-lg -mt-1 -mb-0.5 hover:underline cursor-pointer">
-            {{ message.author.username
-            }}
-<!--            <span class="text-header-description text-sm"-->
-<!--              >#{{ message.author.discriminator }}</span-->
-<!--            >-->
+          <h3
+            class="font-semibold text-lg -mt-1 -mb-0.5 hover:underline cursor-pointer"
+          >
+            {{ message.author.username }}
+            <!--            <span class="text-header-description text-sm"-->
+            <!--              >#{{ message.author.discriminator }}</span-->
+            <!--            >-->
           </h3>
           <span class="text-header-description text-sm">{{
             formattedDate
@@ -53,7 +52,7 @@ import { Formats } from "@/constants/dates";
 const { MESSAGE } = Formats;
 const props = defineProps<{
   message: MessageType;
-  lastAuthor?: string;
+  showOnlyMessage?: boolean;
 }>();
 
 const date = dayjs(props.message.createdAt);

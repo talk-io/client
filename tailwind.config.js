@@ -35,7 +35,7 @@ module.exports = {
         chat: "1.5rem",
       },
       padding: {
-        chat: "1.5rem",
+        chat: "1rem",
       },
       fontSize: {
         "4.5xl": "2.5rem",

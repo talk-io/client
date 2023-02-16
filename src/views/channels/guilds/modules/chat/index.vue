@@ -17,16 +17,18 @@
       >
         <component :is="HighlightedDiv" v-if="HighlightedDiv" />
         <template v-for="(message, idx) in messages" :key="message._id || idx">
-          <Message
-            :lastAuthor="messages[idx + 1]?.author._id || null"
-            :message="message"
-            class="z-0"
-            @mouseenter="handleEnter"
-          />
-          <div
-            v-if="messages[idx + 1]?.author._id !== message.author._id"
-            class="my-1"
-          />
+          <template
+            v-for="(space, idx_2) in [addSpace(idx, message)]"
+            :key="idx_2"
+          >
+            <Message
+              :message="message"
+              :showOnlyMessage="!space"
+              class="z-0"
+              @mouseenter="handleEnter"
+            />
+            <div v-if="space" class="my-1" />
+          </template>
         </template>
       </div>
     </VerticalTransition>
@@ -51,6 +53,7 @@ import Message from "@/components/ui/guild/message.vue";
 import MessageCreate from "./modules/MessageCreate.vue";
 import UserTyping from "./modules/UserTyping.vue";
 import VerticalTransition from "@/components/animations/VerticalTransition.vue";
+import dayjs from "dayjs";
 
 const messagesList = ref<HTMLDivElement>();
 
@@ -62,6 +65,19 @@ const route = useRoute();
 
 const messagesStore = useMessagesStore();
 const messages = ref<Array<MessageType>>();
+
+const addSpace = (idx: number, currentMessage?: MessageType) => {
+  if (!messages.value) return;
+  const nextMessage = messages.value[idx + 1];
+  if (!nextMessage || !currentMessage) return;
+
+  const isSameAuthor = nextMessage?.author._id === currentMessage.author._id;
+  const isSentAfter30Minutes = dayjs(nextMessage.createdAt).isBefore(
+    dayjs(currentMessage.createdAt).subtract(30, "minutes"),
+  );
+
+  return !isSameAuthor || isSentAfter30Minutes;
+};
 
 const messagesFetching = ref(false);
 

@@ -66,4 +66,5 @@ export interface UserTyping {
 export interface ClientToServerEvents {
   [Events.ChannelEvents.USER_TYPING_START]: (channelID: string) => void;
   [Events.ChannelEvents.USER_TYPING_END]: (channelID: string) => void;
+  [Events.MessageEvents.MESSAGE_CREATED]: (message: Message) => void;
 }

@@ -6,7 +6,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "lib": ["es2015", "dom", "dom.iterable", "scripthost", "es2021.intl"],
+    "lib": ["dom", "scripthost", "es2021.intl", "es2021"],
   },
 
   "references": [

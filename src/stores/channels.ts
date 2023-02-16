@@ -4,13 +4,16 @@ import type { BasicUser, Channel } from "@/types/auth";
 import { ChannelType } from "@/types/auth";
 import { useGatewayStore } from "@/stores/gateway";
 import { Events } from "@/types/events";
+import { useAuthStore } from "@/stores/auth";
 
 const { USER_TYPING_START, USER_TYPING_END } = Events.ChannelEvents;
 
 export const useChannelsStore = defineStore("channels", () => {
   const channels = ref<Map<string, Array<Channel>>>(new Map());
   const usersTyping = ref<Map<string, Array<BasicUser>>>(new Map());
+
   const gatewayStore = useGatewayStore();
+  const authStore = useAuthStore();
 
   const getCategories = (guildID: string) => {
     const guildChannels = channels.value.get(guildID);
@@ -39,16 +42,6 @@ export const useChannelsStore = defineStore("channels", () => {
     channels.value
       .get(guildID)
       ?.filter((channel) => channel.type !== ChannelType.GUILD_CATEGORY);
-  // const getChannel = (guildID: string, channelID: string) => {
-  //   const guildChannels = channels.value.get(guildID);
-  //   if (!guildChannels) return;
-  //
-  //   const channelIndex = guildChannels.findIndex(
-  //     (channel) => channel._id === channelID,
-  //   );
-  //
-  //   return guildChannels[channelIndex];
-  // };
 
   const getUsersTyping = (channelID: string) => {
     const users = usersTyping.value.get(channelID);
@@ -73,6 +66,8 @@ export const useChannelsStore = defineStore("channels", () => {
     channelID: string;
     user: BasicUser;
   }) => {
+    if (authStore.getState.user._id === user._id) return false;
+
     const usersTypingInChannel = getUsersTyping(channelID);
     const userIDs = usersTypingInChannel.map((usr) => usr._id);
 
@@ -88,6 +83,8 @@ export const useChannelsStore = defineStore("channels", () => {
     channelID: string;
     userID: string;
   }) => {
+    if (authStore.getState.user._id === userID) return false;
+
     const usersTypingInChannel = getUsersTyping(channelID);
     if (!usersTypingInChannel) return;
 

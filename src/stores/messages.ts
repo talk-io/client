@@ -1,14 +1,20 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import type { AuthorWithMessages, Message } from "@/types/auth";
+import type { Message } from "@/types/auth";
 import { Message as MessageService } from "@/constants/apiRoutes";
 import { useAuthStore } from "@/stores/auth";
 import { service } from "@/utils/service";
 import { nanoid } from "nanoid";
+import { useGatewayStore } from "@/stores/gateway";
+import { Events } from "@/types/events";
+import dayjs from "dayjs";
+
+const { MESSAGE_CREATED } = Events.MessageEvents;
 
 export const useMessagesStore = defineStore("messagesStore", () => {
   const messages = ref<Map<string, Array<Message>>>(new Map());
   const authStore = useAuthStore();
+  const gatewayStore = useGatewayStore();
 
   const _fetchMessages = async (channelID: string) => {
     const fetchedMessages = await MessageService.GET(channelID);
@@ -30,10 +36,6 @@ export const useMessagesStore = defineStore("messagesStore", () => {
     const channelMessages = messages.value.get(payload.channelID);
     if (!channelMessages) return;
 
-    console.log({ payload });
-
-    const userID = authStore.getState.user?._id;
-    if (userID === payload.authorID) return;
     channelMessages.unshift(payload);
   };
 
@@ -50,9 +52,9 @@ export const useMessagesStore = defineStore("messagesStore", () => {
       _id: nanoid(),
       content: payload.content,
       author: user,
+      createdAt: dayjs().toISOString(),
     };
 
-    // addMessage(<Message>loadingMsg.value);
     channelMessages.unshift(<Message>loadingMsg);
 
     try {
@@ -60,6 +62,8 @@ export const useMessagesStore = defineStore("messagesStore", () => {
         MessageService.SEND(payload.channelID),
         payload,
       );
+
+      emitMessage(message);
 
       const idx = channelMessages.findIndex(
         (msg) => msg._id === loadingMsg._id,
@@ -70,10 +74,15 @@ export const useMessagesStore = defineStore("messagesStore", () => {
     }
   };
 
+  const emitMessage = (payload: Message) =>
+    gatewayStore.getSocket?.emit(MESSAGE_CREATED, payload);
+
   return {
     getMessages,
 
-    addEmittedMessage,
     createMessage,
+
+    addEmittedMessage,
+    emitMessage,
   };
 });
