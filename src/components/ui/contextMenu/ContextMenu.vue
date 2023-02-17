@@ -28,7 +28,7 @@
 <script lang="ts" setup>
 import VerticalTransition from "@/components/animations/VerticalTransition.vue";
 import { onMounted, reactive } from "vue";
-// TODO unfinished
+
 const props = defineProps<{
   event: MouseEvent;
 }>();

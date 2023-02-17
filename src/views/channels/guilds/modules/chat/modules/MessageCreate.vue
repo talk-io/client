@@ -1,18 +1,23 @@
 <template>
   <div
-    class="flex h-14 items-center bg-message-create-back rounded-lg drop-shadow-2xl gap-3 px-5"
+    class="grid grid-cols-[3rem_1fr_3rem] h-12 place-items-center bg-message-create-back rounded-lg drop-shadow-2xl"
   >
-    <Icon icon="ep:circle-plus-filled" />
-    <input
-      v-model="message"
-      :placeholder="`Message #${channel.name}`"
-      class="border-0 rounded-md p-2 bg-transparent disabled:opacity-50 w-full focus:outline-none break-normal whitespace-pre break-words"
-      @keydown="emitTyping"
-      @keydown.enter.prevent="submit"
-    />
-    <div class="flex gap-3">
-      <Icon icon="fluent:gif-16-filled" />
-      <Icon icon="mdi:emoji-robot-excited" />
+    <Icon class="!text-2xl" icon="ep:circle-plus-filled" />
+    <div class="flex w-full">
+      <input
+        v-model="message"
+        :placeholder="`Message #${channel.name}`"
+        class="border-0 rounded-md py-2 bg-transparent disabled:opacity-50 w-full focus:outline-none break-normal whitespace-pre break-words"
+        @keydown="emitTyping"
+        @keydown.enter.prevent="submit"
+      />
+      <div class="flex gap-3 mr-3">
+        <Icon icon="fluent:gif-16-filled" />
+        <Icon icon="mdi:emoji-robot-excited" />
+      </div>
+    </div>
+    <div class="border-l-2 border-solid border-hr w-full grid place-items-center">
+      <Icon icon="fluent:send-28-filled" />
     </div>
   </div>
 </template>

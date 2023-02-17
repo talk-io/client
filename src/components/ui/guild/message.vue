@@ -16,7 +16,7 @@
       :class="{
         'opacity-50': !message._id,
       }"
-      class="grid grid-rows-[1.5rem_1fr] gap-x-1 grid-cols-[3.5rem_1fr_3.5rem] w-full py-0.5"
+      class="grid grid-rows-[1.5rem_1fr] gap-x-1 grid-cols-chat w-full py-0.5"
       @mouseenter="isHovered = true"
       @mouseleave="isHovered = false"
     >

@@ -14,7 +14,7 @@ module.exports = {
         "secondary-light": "rgba(47,49,54,0.7)",
         tertiary: "rgba(185, 187, 190, 0.5)",
         input: "#202225",
-        "message-create-back": "rgba(185, 187, 190, 0.1)",
+        "message-create-back": "rgba(185, 187, 190, 0.05)",
         "header-secondary": "rgb(185, 187, 190)",
         "header-description": "#B9BBBE",
         label: "#ccc",
@@ -30,7 +30,7 @@ module.exports = {
         "logo-back": "#D5CBA7",
       },
       borderColor: {
-        hr: "rgba(76,76,76,0.44)",
+        hr: "rgba(76,76,76,0.5)",
       },
       fontFamily: {
         logo: ["imprint-mt-shadow", "sans-serif"],
@@ -43,6 +43,9 @@ module.exports = {
       },
       fontSize: {
         "4.5xl": "2.5rem",
+      },
+      gridTemplateColumns: {
+        chat: "3.5rem 1fr 2rem",
       },
     },
   },
