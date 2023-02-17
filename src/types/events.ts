@@ -1,4 +1,5 @@
 import type { Message, BasicUser } from "@/types/auth";
+import type { PresenceStatus } from "@/types/enums";
 
 export namespace Events {
   export enum UserEvents {
@@ -41,6 +42,10 @@ export namespace Events {
 
 export interface ServerToClientEvents {
   [Events.UserEvents.INIT]: () => void;
+  [Events.UserEvents.UPDATE_STATUS]: (
+    userID: string,
+    status: PresenceStatus,
+  ) => void;
   [Events.MessageEvents.MESSAGE_CREATED]: (message: Message) => void;
   [Events.ChannelEvents.USER_TYPING_START]: ({
     channelID,

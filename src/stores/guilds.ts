@@ -4,12 +4,14 @@ import { useChannelsStore } from "@/stores/channels";
 import type { Guild } from "@/types/auth";
 import { useRoute } from "vue-router";
 import { useMembersStore } from "@/stores/members";
+import { useUsersStore } from "@/stores/users";
 
 export const useGuildStore = defineStore("guilds", () => {
   const state = ref<Map<string, Guild>>(new Map());
 
   const channelsStore = useChannelsStore();
   const membersStore = useMembersStore();
+  const usersStore = useUsersStore();
 
   const getGuilds = computed(() => Array.from(state.value.values() || []));
   const getGuild = (guildID: string) => state.value.get(guildID);
@@ -38,12 +40,11 @@ export const useGuildStore = defineStore("guilds", () => {
   const setGuilds = (guilds: Array<Guild>) => {
     const guildMap = guilds.map((guild) => {
       channelsStore.setChannels(guild._id, guild.channels);
-      membersStore.setMembers(guild._id, guild.members);
+      guild.members.forEach((member) => {
+        const user = usersStore.getUser(member);
+        if (user) membersStore.setMember(guild._id, user);
+      });
 
-      // const newGuild = reactive({
-      //   ...guild,
-      //   channels: channelsStore.getChannels(guild._id),
-      // });
       const newGuild = reactive(guild);
 
       return [guild._id, newGuild];

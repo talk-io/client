@@ -2,6 +2,7 @@
   <RouterView v-slot="{ Component }">
     <Suspense>
       <div id="wrapper">
+        <div id="context" />
         <Transition mode="out-in" name="main">
           <DefaultLayout v-if="authStore.getLoading">
             <div class="flex flex-col gap-3 items-center">

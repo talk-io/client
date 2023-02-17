@@ -5,7 +5,7 @@
   >
     <GuildSettings
       :name="guild.name"
-      class="w-full py-3 px-3 drop-shadow-lg z-20"
+      class="w-full py-3 px-3 drop-shadow-lg"
     />
     <ChannelSettings
       v-if="currentChannel"
@@ -14,7 +14,7 @@
     />
     <Channels class="pt-4 px-3" />
     <Chat v-if="currentChannel" :channel="currentChannel" />
-    <Members :guild="guild" class="pt-4 px-2 z-20" />
+    <Members :guild="guild" class="pt-4 px-3 z-20" />
   </div>
 </template>
 

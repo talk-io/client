@@ -21,6 +21,10 @@ module.exports = {
         primary: "#a29bfe",
         card: "#36393f",
         tooltip: "rgba(32,34,37,0.9)",
+        online: "#43b581",
+        offline: "#747f8d",
+        dnd: "#f04747",
+        idle: "#faa61a",
       },
       backgroundColor: {
         "logo-back": "#D5CBA7",

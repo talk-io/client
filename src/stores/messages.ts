@@ -18,7 +18,6 @@ export const useMessagesStore = defineStore("messagesStore", () => {
 
   const _fetchMessages = async (channelID: string) => {
     const fetchedMessages = await MessageService.GET(channelID);
-    // const modifiedMessages = _combineMessages(fetchedMessages);
     messages.value.set(channelID, fetchedMessages);
   };
 

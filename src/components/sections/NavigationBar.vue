@@ -60,40 +60,43 @@
     <span
       v-if="isHovering"
       :style="tooltipStyle"
-      class="absolute whitespace-nowrap drop-shadow-lg backdrop-blur-2xl text-lg w-fit origin-left font-medium transition-all z-50 bg-tooltip rounded-lg px-3 py-1.5 after:absolute after:top-1/2 after:-translate-y-3 after:-left-5 after:border-[12px] after:border-solid after:border-[transparent_#202225_transparent_transparent]"
+      class="absolute whitespace-nowrap drop-shadow-lg backdrop-blur-2xl text-lg w-fit origin-left font-medium transition-all z-20 bg-tooltip rounded-lg px-3 py-1.5 after:absolute after:top-1/2 after:-translate-y-3 after:-left-5 after:border-[12px] after:border-solid after:border-[transparent_#202225_transparent_transparent]"
     >
       {{ currentTooltip }}
     </span>
   </teleport>
 
-  <ContextMenu
-    v-if="showContextMenu"
-    v-slot="{ handleEnter }"
-    :event="eventHolder"
-  >
-    <ContextMenuItem :handleEnter="handleEnter" class="cursor-not-allowed">
-      <span class="opacity-40">Mark as Read</span>
-    </ContextMenuItem>
-    <Rule />
-    <ContextMenuItem :handleEnter="handleEnter">
-      <span class="text-primary">Invite People</span>
-    </ContextMenuItem>
-    <Rule />
-    <ContextMenuItem :handleEnter="handleEnter">
-      <span>Create Channel</span>
-    </ContextMenuItem>
-    <ContextMenuItem :handleEnter="handleEnter">
-      <span>Create Category</span>
-    </ContextMenuItem>
-    <Rule />
-    <ContextMenuItem :handleEnter="handleEnter">
-      <span class="text-logo-text">Leave Server</span>
-    </ContextMenuItem>
-    <Rule />
-    <ContextMenuItem :handleEnter="handleEnter">
-      <span>Copy ID</span>
-    </ContextMenuItem>
-  </ContextMenu>
+  <teleport v-if="showContextMenu" to="#context">
+    <ContextMenu
+      :key="eventHolder"
+      v-slot="{ handleEnter }"
+      v-click-outside="onCloseContextMenu"
+      :event="eventHolder"
+    >
+      <ContextMenuItem :handleEnter="handleEnter" class="cursor-not-allowed">
+        <span class="opacity-40">Mark as Read</span>
+      </ContextMenuItem>
+      <Rule />
+      <ContextMenuItem :handleEnter="handleEnter">
+        <span class="text-primary">Invite People</span>
+      </ContextMenuItem>
+      <Rule />
+      <ContextMenuItem :handleEnter="handleEnter">
+        <span>Create Channel</span>
+      </ContextMenuItem>
+      <ContextMenuItem :handleEnter="handleEnter">
+        <span>Create Category</span>
+      </ContextMenuItem>
+      <Rule />
+      <ContextMenuItem :handleEnter="handleEnter">
+        <span class="text-logo-text">Leave Server</span>
+      </ContextMenuItem>
+      <Rule />
+      <ContextMenuItem :handleEnter="handleEnter">
+        <span>Copy ID</span>
+      </ContextMenuItem>
+    </ContextMenu>
+  </teleport>
 </template>
 <script lang="ts" setup>
 import NavbarItem from "@/components/ui/NavbarItem.vue";
@@ -117,7 +120,7 @@ const tooltipStyle = ref({
   top: "0px",
   left: "0px",
   transform: "translate(0px, 0)",
-  scale: '0',
+  scale: "0",
 });
 
 const onHover = (tooltip: string, event: MouseEvent) => {
@@ -127,12 +130,12 @@ const onHover = (tooltip: string, event: MouseEvent) => {
     top: `${rect.top + rect.height / 2 - 22}px`,
     left: `${rect.left + rect.width / 2 + 16 * 3}px`,
     transform: `translate(0px, ${rect.top})`,
-    scale: '0',
+    scale: "0",
   };
   currentTooltip.value = tooltip;
   isHovering.value = true;
   setTimeout(() => {
-    tooltipStyle.value["scale"] = '1';
+    tooltipStyle.value["scale"] = "1";
   }, 0);
 };
 
@@ -144,5 +147,8 @@ const onLeave = () => {
 const onRightClick = (event: MouseEvent) => {
   eventHolder.value = event;
   showContextMenu.value = true;
+};
+const onCloseContextMenu = () => {
+  showContextMenu.value = false;
 };
 </script>

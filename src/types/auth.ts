@@ -1,9 +1,10 @@
-import type { ComputedRef } from "vue";
+import type { PresenceStatus } from "@/types/enums";
 
 export type BasicUser = {
   _id: string;
   username: string;
   discriminator: string;
+  status: PresenceStatus;
 };
 
 export interface Message {
@@ -16,13 +17,6 @@ export interface Message {
   guildID: string;
   createdAt: string;
   updatedAt: string;
-}
-
-export interface AuthorWithMessages {
-  _id: string;
-  authorID: string;
-  author: BasicUser;
-  messages: Array<Message>;
 }
 
 export enum ChannelType {
@@ -51,7 +45,7 @@ export type Guild = {
   name: string;
   description: string;
   owner: BasicUser;
-  members: Array<BasicUser>;
+  members: Array<string>;
   channels: Array<Channel>;
   lastVisitedChannel?: string;
 };

@@ -7,9 +7,11 @@ import { io } from "socket.io-client";
 import { useGatewayStore } from "@/stores/gateway";
 import { useGuildStore } from "@/stores/guilds";
 import { useRouter } from "vue-router";
+import { useUsersStore } from "@/stores/users";
 
 export const useAuthStore = defineStore("authStore", () => {
   const guildsStore = useGuildStore();
+  const usersStore = useUsersStore();
 
   const state = reactive<{
     user: Partial<BasicUser>;
@@ -73,16 +75,25 @@ export const useAuthStore = defineStore("authStore", () => {
       });
 
       await new Promise((res) =>
-        socket.once("init", (data: User) => {
-          const { guilds } = data;
-          guildsStore.setGuilds(guilds);
+        socket.once(
+          "init",
+          ({
+            userData: data,
+            users,
+          }: {
+            userData: User;
+            users: Array<BasicUser>;
+          }) => {
+            const { guilds } = data;
+            usersStore.setUsers(users);
+            guildsStore.setGuilds(guilds);
 
-          setUser(data);
-          setToken(token);
-          setIsLoggedIn(true);
-          // setLoading(false);
-          res(false);
-        }),
+            setUser(data);
+            setToken(token);
+            setIsLoggedIn(true);
+            res(false);
+          },
+        ),
       );
 
       const gatewayStore = useGatewayStore();

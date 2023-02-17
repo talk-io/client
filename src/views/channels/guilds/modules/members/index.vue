@@ -1,50 +1,74 @@
 <template>
   <div class="bg-secondary">
-    <div class="flex flex-col gap-2 relative">
-      <VerticalTransition
-        v-slot="{
-          handleEnter,
-          handleLeave,
+    <VerticalTransition
+      v-slot="{
+        handleEnter,
+        handleLeave,
 
-          HighlightedDiv,
-        }"
-        :additionalSpace="16 * 4"
-      >
-        <span
-          ref="members_title"
-          class="text-header-secondary font-medium text-base px-3 select-none"
-        >
-          OFFLINE &dash; {{ members.length }}
-        </span>
-        <ul ref="membersRef" class="flex flex-col" @mouseleave="handleLeave">
-          <component :is="HighlightedDiv" v-if="HighlightedDiv" class="!bg-card" />
-          <Member
-            v-for="member in members"
-            :key="member._id"
-            :user="member"
-            @mouseenter="handleEnter"
+        HighlightedDiv,
+      }"
+      :additionalSpace="16 * 4"
+    >
+      <div class="overflow-y-auto h-full">
+        <div class="flex flex-col gap-3 relative" @mouseleave="handleLeave">
+          <component
+            :is="HighlightedDiv"
+            v-if="HighlightedDiv"
+            class="!bg-card"
           />
-        </ul>
-      </VerticalTransition>
-    </div>
+          <template v-for="stat in members" :key="stat.title">
+            <MemberGroup
+              v-if="stat.members.length"
+              :count="stat.members.length"
+              :title="stat.title"
+            >
+              <Member
+                v-for="member in stat.members"
+                :key="member._id"
+                :user="member"
+                @mouseenter="handleEnter"
+              />
+            </MemberGroup>
+          </template>
+        </div>
+      </div>
+    </VerticalTransition>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { Guild } from "@/types/auth";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useMembersStore } from "@/stores/members";
 import Member from "@/components/ui/guild/member.vue";
 import VerticalTransition from "@/components/animations/VerticalTransition.vue";
+import { PresenceStatus } from "@/types/enums";
+import MemberGroup from "@/components/ui/guild/MemberGroup.vue";
 
 const props = defineProps<{
   guild: Guild;
 }>();
 
-const membersRef = ref<HTMLUListElement>();
-
 const membersStore = useMembersStore();
-const members_title = ref<HTMLSpanElement>();
 
-const members = computed(() => membersStore.getMembers(props.guild._id));
+const members = computed(() => {
+  const membrs = membersStore.getMembers(props.guild._id);
+  const online = membrs.filter((m) => m.status === PresenceStatus.Online);
+  const offline = membrs.filter(
+    (m) =>
+      m.status === PresenceStatus.Offline ||
+      m.status === PresenceStatus.Invisible,
+  );
+
+  return [
+    {
+      title: "ONLINE",
+      members: online,
+    },
+    {
+      title: "OFFLINE",
+      members: offline,
+    },
+  ];
+});
 </script>

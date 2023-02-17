@@ -9,6 +9,8 @@ import { Events } from "@/types/events";
 import { useMessagesStore } from "@/stores/messages";
 import { useAuthStore } from "@/stores/auth";
 import { useChannelsStore } from "@/stores/channels";
+import { useMembersStore } from "@/stores/members";
+import { useUsersStore } from "@/stores/users";
 
 const {
   GuildUserEvents,
@@ -22,6 +24,7 @@ export const useGatewayStore = defineStore("gatewayStore", () => {
   const messagesStore = useMessagesStore();
   const channelsStore = useChannelsStore();
   const authStore = useAuthStore();
+  const usersStore = useUsersStore();
 
   const state = reactive<{
     socket: Socket<ServerToClientEvents, ClientToServerEvents> | null;
@@ -59,6 +62,9 @@ export const useGatewayStore = defineStore("gatewayStore", () => {
     const { USER_TYPING_START, USER_TYPING_END } = ChannelEvents;
     state.socket.on(USER_TYPING_START, channelsStore.setUserTyping);
     state.socket.on(USER_TYPING_END, channelsStore.removeUserTyping);
+
+    const { UPDATE_STATUS } = UserEvents;
+    state.socket.on(UPDATE_STATUS, usersStore.setUserStatus);
   };
 
   return {

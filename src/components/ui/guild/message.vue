@@ -1,10 +1,14 @@
 <template>
   <div class="px-chat w-full group">
-    <div v-if="showOnlyMessage" class="flex items-center gap-2 w-full py-0.5">
+    <div
+      v-if="showOnlyMessage"
+      class="grid grid-cols-[3.5rem_1fr] gap-x-1 items-center w-full py-0.5"
+    >
       <span
         class="text-header-secondary w-14 text-sm opacity-0 group-hover:opacity-100 transition-opacity"
-        >{{ date.format(MESSAGE) }}</span
       >
+        {{ date.format(MESSAGE) }}
+      </span>
       <p>{{ message.content }}</p>
     </div>
     <div
@@ -12,32 +16,25 @@
       :class="{
         'opacity-50': !message._id,
       }"
-      class="flex w-full items-center py-0.5 gap-2"
+      class="grid grid-rows-[1.5rem_1fr] gap-x-1 grid-cols-[3.5rem_1fr_3.5rem] w-full py-0.5"
       @mouseenter="isHovered = true"
       @mouseleave="isHovered = false"
     >
       <Icon
-        class="text-5xl w-14 text-header-secondary"
+        class="text-5xl row-span-2 text-header-secondary"
         icon="mdi:face-man-profile"
       />
-      <div class="flex flex-col">
-        <div class="flex items-center gap-2">
-          <h3
-            class="font-semibold text-lg -mt-1 -mb-0.5 hover:underline cursor-pointer"
-          >
-            {{ message.author.username }}
-            <!--            <span class="text-header-description text-sm"-->
-            <!--              >#{{ message.author.discriminator }}</span-->
-            <!--            >-->
-          </h3>
-          <span class="text-header-description text-sm">{{
-            formattedDate
-          }}</span>
-        </div>
-        <p>
-          {{ message.content }}
-        </p>
+      <div class="flex items-center gap-2">
+        <h3
+          class="font-semibold text-lg -mt-1 -mb-0.5 hover:underline cursor-pointer"
+        >
+          {{ message.author.username }}
+        </h3>
+        <span class="text-header-description text-sm">{{ formattedDate }}</span>
       </div>
+      <p class="whitespace-pre-wrap row-start-2 col-start-2 break-words break-all">
+        {{ message.content }}
+      </p>
     </div>
   </div>
 </template>

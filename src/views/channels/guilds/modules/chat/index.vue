@@ -12,7 +12,7 @@
       <div
         v-else
         ref="messagesList"
-        class="flex flex-col-reverse overflow-y-auto h-full py-6"
+        class="flex flex-col-reverse overflow-y-auto max-w-full overflow-x-hidden h-full py-6"
         @mouseleave="handleLeave"
       >
         <component :is="HighlightedDiv" v-if="HighlightedDiv" />
@@ -66,12 +66,12 @@ const route = useRoute();
 const messagesStore = useMessagesStore();
 const messages = ref<Array<MessageType>>();
 
-const addSpace = (idx: number, currentMessage?: MessageType) => {
+const addSpace = (idx: number, currentMessage: MessageType) => {
   if (!messages.value) return;
   const nextMessage = messages.value[idx + 1];
-  if (!nextMessage || !currentMessage) return;
+  if (!nextMessage) return true;
 
-  const isSameAuthor = nextMessage?.author._id === currentMessage.author._id;
+  const isSameAuthor = nextMessage.author._id === currentMessage.author._id;
   const isSentAfter30Minutes = dayjs(nextMessage.createdAt).isBefore(
     dayjs(currentMessage.createdAt).subtract(30, "minutes"),
   );
@@ -102,7 +102,5 @@ const scrollToEnd = () => {
 };
 
 onMounted(fetchMessages);
-
 watch(() => route.params.channelID, fetchMessages);
-watch(() => messages.value?.length, scrollToEnd);
 </script>

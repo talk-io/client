@@ -6,7 +6,7 @@
     <input
       v-model="message"
       :placeholder="`Message #${channel.name}`"
-      class="border-0 rounded-md p-2 bg-transparent disabled:opacity-50 w-full focus:outline-none"
+      class="border-0 rounded-md p-2 bg-transparent disabled:opacity-50 w-full focus:outline-none break-normal whitespace-pre break-words"
       @keydown="emitTyping"
       @keydown.enter.prevent="submit"
     />
