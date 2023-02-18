@@ -17,20 +17,20 @@
       </div>
     </div>
     <div class="border-l-2 border-solid border-hr w-full grid place-items-center">
-      <Icon icon="fluent:send-28-filled" />
+      <Icon class="!text-2xl" icon="fluent:send-28-filled" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { Channel } from "@/types/auth";
+import type { Channel as ChannelType } from "@/types/auth";
 import Icon from "@/components/ui/Icon.vue";
 import { ref } from "vue";
 import { useMessagesStore } from "@/stores/messages";
 import { useChannelsStore } from "@/stores/channels";
 
 const props = defineProps<{
-  channel: Channel;
+  channel: ChannelType;
 }>();
 
 const messagesStore = useMessagesStore();

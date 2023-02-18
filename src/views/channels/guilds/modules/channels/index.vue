@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-secondary h-full">
+  <div class="flex flex-col justify-between bg-secondary">
     <VerticalTransition
       v-slot="{
         handleEnter,
@@ -9,7 +9,7 @@
       }"
       :additionalSpace="16 * 4"
     >
-      <div class="overflow-y-auto h-full">
+      <div class="overflow-y-auto px-3">
         <div class="flex flex-col gap-3 relative" @mouseleave="handleLeave">
           <component
             :is="HighlightedDiv"
@@ -32,6 +32,9 @@
         </div>
       </div>
     </VerticalTransition>
+    <div class="h-14">
+      <User />
+    </div>
   </div>
 </template>
 
@@ -42,6 +45,7 @@ import Category from "@/components/ui/guild/category.vue";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import VerticalTransition from "@/components/animations/VerticalTransition.vue";
+import User from "@/views/channels/guilds/modules/channels/modules/user.vue";
 
 const route = useRoute();
 const channelsStore = useChannelsStore();

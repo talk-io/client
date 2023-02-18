@@ -4,7 +4,7 @@
       <Suspense>
         <component
           :is="Component"
-          class="w-full h-screen bg-card overflow-y-none"
+          class="w-full max-h-screen bg-card overflow-y-none"
         />
 
         <template #fallback> loading... </template>

@@ -1,18 +1,15 @@
 <template>
   <div
     v-if="guild"
-    class="grid grid-cols-[16rem_1fr_16rem] grid-rows-[3rem_100%] w-full h-screen overflow-y-hidden"
+    class="grid grid-cols-[18rem_1fr_18rem] grid-rows-guild-ui w-full h-full"
   >
-    <GuildSettings
-      :name="guild.name"
-      class="w-full py-3 px-3 drop-shadow-lg"
-    />
+    <GuildSettings :name="guild.name" class="h-12 w-full py-3 px-3 drop-shadow-lg" />
     <ChannelSettings
       v-if="currentChannel"
       :channel="currentChannel"
-      class="w-full col-span-2 px-3 py-2.5 drop-shadow-lg z-20"
+      class="w-full col-span-2 px-3 h-12 py-2.5 drop-shadow-lg z-20"
     />
-    <Channels class="pt-4 px-3" />
+    <Channels class="pt-4" />
     <Chat v-if="currentChannel" :channel="currentChannel" />
     <Members :guild="guild" class="pt-4 px-3 z-20" />
   </div>

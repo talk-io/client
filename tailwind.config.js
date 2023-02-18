@@ -47,6 +47,10 @@ module.exports = {
       gridTemplateColumns: {
         chat: "3.5rem 1fr 2rem",
       },
+      gridTemplateRows: {
+        "guild-ui": "3rem minmax(0, 1fr)",
+        chat: "minmax(0, 1fr) 4.5rem",
+      },
     },
   },
   plugins: [require("tailwind-scrollbar")({ noncompatible: true })],

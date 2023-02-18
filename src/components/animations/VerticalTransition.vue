@@ -29,8 +29,8 @@ const handleEnter = (e: MouseEvent) => {
   const height = linkCoords.top - (props.additionalSpace ?? 0);
 
   highlightedStyles["height"] = `${linkCoords.height}px`;
-  highlightedStyles["transform"] = `translate(0px, ${height}px)`;
   highlightedStyles["width"] = `${linkCoords.width}px`;
+  highlightedStyles["transform"] = `translate(0px, ${height}px)`;
   isVisible.value = true;
   setTimeout(() => {
     highlightedStyles["opacity"] = "1";

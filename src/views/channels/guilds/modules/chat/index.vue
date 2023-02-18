@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-rows-[1fr_7.5rem] w-full h-full">
+  <div class="grid grid-rows-chat w-full h-full">
     <VerticalTransition
       v-slot="{
         handleEnter,
