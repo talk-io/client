@@ -17,7 +17,11 @@
       </div>
     </div>
     <div class="border-l-2 border-solid border-hr w-full grid place-items-center">
-      <Icon class="!text-2xl" icon="fluent:send-28-filled" />
+      <Icon
+        :class="{
+        'text-logo-text': canSendMessage,
+      }"
+        :disabled="!canSendMessage" class="!text-2xl" icon="fluent:send-28-filled" @click.prevent="submit" />
     </div>
   </div>
 </template>
@@ -25,7 +29,7 @@
 <script lang="ts" setup>
 import type { Channel as ChannelType } from "@/types/auth";
 import Icon from "@/components/ui/Icon.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useMessagesStore } from "@/stores/messages";
 import { useChannelsStore } from "@/stores/channels";
 
@@ -39,13 +43,18 @@ const channelsStore = useChannelsStore();
 const message = ref<string>("");
 const emits = defineEmits(["onMessageCreate"]);
 
+const canSendMessage = computed(() => {
+  const msg = message.value?.trim();
+  return msg.length > 0;
+});
+
 const submit = async () => {
   const msg = message.value?.trim();
   if (!msg.length) return;
   message.value = "";
   await messagesStore.createMessage({
     content: msg,
-    channelID: props.channel._id,
+    channelID: props.channel._id
   });
   emits("onMessageCreate");
   channelsStore.emitUserStopTyping(props.channel._id);
