@@ -46,7 +46,7 @@ import { computed, ref } from "vue";
 import dayjs from "dayjs";
 import { Formats } from "@/constants/dates";
 
-const { MESSAGE } = Formats;
+const { MESSAGE, MESSAGE_WITH_DATE } = Formats;
 const props = defineProps<{
   message: MessageType;
   showOnlyMessage?: boolean;
@@ -61,7 +61,7 @@ const formattedDate = computed(() => {
 
   if (isToday) return date.format(`[Today at] ${MESSAGE}`);
   else if (isYesterday) return date.format(`[Yesterday at] ${MESSAGE}`);
-  return date.format(MESSAGE);
+  return date.format(MESSAGE_WITH_DATE);
 });
 
 const isHovered = ref(false);

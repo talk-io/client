@@ -1,4 +1,4 @@
-import type { Message, BasicUser } from "@/types/auth";
+import type { Message, BasicUser, User } from "@/types/auth";
 import type { PresenceStatus } from "@/types/enums";
 
 export namespace Events {
@@ -39,9 +39,13 @@ export namespace Events {
     MESSAGE_DELETED = "messageDeleted",
   }
 }
-
+type Init = {
+  user: User;
+  users: Array<BasicUser>;
+  guildsWithMembers: Record<string, Array<BasicUser>>;
+};
 export interface ServerToClientEvents {
-  [Events.UserEvents.INIT]: () => void;
+  [Events.UserEvents.INIT]: ({ user, users, guildsWithMembers }: Init) => void;
   [Events.UserEvents.UPDATE_STATUS]: (
     userID: string,
     status: PresenceStatus,

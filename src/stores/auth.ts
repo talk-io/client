@@ -3,15 +3,23 @@ import { computed, reactive } from "vue";
 import { service } from "@/utils/service";
 import { Auth } from "@/constants/apiRoutes";
 import type { BasicUser, LoginResponse, User } from "@/types/auth";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import { useGatewayStore } from "@/stores/gateway";
 import { useGuildStore } from "@/stores/guilds";
-import { useRouter } from "vue-router";
 import { useUsersStore } from "@/stores/users";
+import type {
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from "@/types/events";
+import { Events } from "@/types/events";
+import { useMembersStore } from "@/stores/members";
+
+const { UserEvents } = Events;
 
 export const useAuthStore = defineStore("authStore", () => {
   const guildsStore = useGuildStore();
   const usersStore = useUsersStore();
+  const membersStore = useMembersStore();
 
   const state = reactive<{
     user: Partial<BasicUser>;
@@ -59,13 +67,16 @@ export const useAuthStore = defineStore("authStore", () => {
       const token = newToken || getToken.value;
       if (!token) return resetState();
 
-      const socket = io(import.meta.env.VITE_GATEWAY_HOST, {
-        extraHeaders: {
-          Authorization: `Bearer ${token}`,
+      const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+        import.meta.env.VITE_GATEWAY_HOST,
+        {
+          extraHeaders: {
+            Authorization: `Bearer ${token}`,
+          },
+          timeout: 5000,
+          secure: true,
         },
-        timeout: 5000,
-        secure: true,
-      });
+      );
 
       socket.io.on("close", async (reason) => {
         if (reason !== "forced close") return;
@@ -76,17 +87,12 @@ export const useAuthStore = defineStore("authStore", () => {
 
       await new Promise((res) =>
         socket.once(
-          "init",
-          ({
-            userData: data,
-            users,
-          }: {
-            userData: User;
-            users: Array<BasicUser>;
-          }) => {
+          UserEvents.INIT,
+          ({ user: data, users, guildsWithMembers }) => {
             const { guilds } = data;
             usersStore.setUsers(users);
             guildsStore.setGuilds(guilds);
+            membersStore.setMembers(guildsWithMembers);
 
             setUser(data);
             setToken(token);

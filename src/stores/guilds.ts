@@ -40,10 +40,6 @@ export const useGuildStore = defineStore("guilds", () => {
   const setGuilds = (guilds: Array<Guild>) => {
     const guildMap = guilds.map((guild) => {
       channelsStore.setChannels(guild._id, guild.channels);
-      guild.members.forEach((member) => {
-        const user = usersStore.getUser(member);
-        if (user) membersStore.setMember(guild._id, user);
-      });
 
       const newGuild = reactive(guild);
 
