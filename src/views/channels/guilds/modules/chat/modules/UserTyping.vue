@@ -1,35 +1,33 @@
 <template>
-  <div class="h-7 w-full">
-    <Transition name="main">
-      <div v-if="currentlyTyping.length" class="flex items-center w-full h-full">
+<!--  <Transition name="main">-->
+    <div class="col-span-3 w-full h-7 px-chat border-message-create-back border-t-2">
+      <div
+        class="flex items-center rounded-b-md w-full h-full">
         <Icon class="text-lg -mb-0.5 text-header-secondary" icon="eos-icons:typing" />
         <span class="px-1">{{ text }}</span>
       </div>
-    </Transition>
-  </div>
+    </div>
+<!--  </Transition>-->
 </template>
 
 <script lang="ts" setup>
-import type { Channel } from "@/types/auth";
-import { useChannelsStore } from "@/stores/channels";
+import type { BasicUser } from "@/types/auth";
 import { computed } from "vue";
 import { Icon } from "@iconify/vue";
 
 const props = defineProps<{
-  channel: Channel;
+  currentlyTyping: Array<BasicUser>;
 }>();
 
-const channelsStore = useChannelsStore();
-
-const currentlyTyping = computed(() =>
-  channelsStore.getUsersTyping(props.channel._id),
-);
+// const currentlyTyping = computed(() =>
+//   [{ username: "wee" }, { username: "wwaawwa" }]
+// );
 
 const lf = new Intl.ListFormat("en");
 
 const text = computed(() => {
-  const names = lf.format(currentlyTyping.value.map((user) => user.username));
-  const isManyTyping = currentlyTyping.value.length > 1;
+  const names = lf.format(props.currentlyTyping.map((user) => user.username));
+  const isManyTyping = props.currentlyTyping.length > 1;
   return `${names} ${isManyTyping ? "are" : "is"} typing...`;
 });
 </script>

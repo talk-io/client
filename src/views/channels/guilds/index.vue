@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="guild"
-    class="grid grid-cols-[18rem_1fr_18rem] grid-rows-guild-ui w-full h-full"
+    class="grid grid-cols-[18rem_1fr_18rem] grid-rows-guild-ui w-full h-full overflow-hidden"
   >
     <GuildSettings :name="guild.name" class="h-12 w-full py-3 px-3 drop-shadow-lg" />
     <ChannelSettings

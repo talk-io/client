@@ -57,6 +57,7 @@ body {
 .fade-leave-to {
     opacity: 0;
 }
+
 .main-enter-active,
 .main-leave-active {
     transition: opacity 0.1s ease-in-out;
@@ -89,6 +90,43 @@ body {
 .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+
+@keyframes typingSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes typingSlideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.typing-enter-active {
+    animation: typingSlideUp 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.typing-leave-active {
+    animation: typingSlideDown 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.typing-enter-from,
+.typing-leave-to {
+    opacity: 0;
 }
 
 /*.router-link-exact-active {*/

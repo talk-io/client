@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-rows-chat w-full h-full">
+  <div class="w-full h-full relative">
     <VerticalTransition
       v-slot="{
         handleEnter,
@@ -7,12 +7,13 @@
 
         HighlightedDiv,
       }"
+      :additionalSpace="16*3"
     >
       <div v-if="messagesFetching" class="w-10 h-10 bg-red-500" />
       <div
         v-else
         ref="messagesList"
-        class="flex flex-col-reverse overflow-y-auto max-w-full overflow-x-hidden h-full py-6"
+        class="flex flex-col-reverse overflow-y-auto max-w-full overflow-x-hidden h-full py-24"
         @mouseleave="handleLeave"
       >
         <component :is="HighlightedDiv" v-if="HighlightedDiv" />
@@ -32,14 +33,11 @@
         </template>
       </div>
     </VerticalTransition>
-    <div class="flex flex-col mx-chat">
       <MessageCreate
         :channel="channel"
         class="w-full"
         @onMessageCreate="scrollToEnd"
       />
-      <UserTyping :channel="channel" />
-    </div>
   </div>
 </template>
 
@@ -51,7 +49,6 @@ import { nextTick, onMounted, ref, watch } from "vue";
 import type { Channel } from "@/types/auth";
 import Message from "@/components/ui/guild/message.vue";
 import MessageCreate from "./modules/MessageCreate.vue";
-import UserTyping from "./modules/UserTyping.vue";
 import VerticalTransition from "@/components/animations/VerticalTransition.vue";
 import dayjs from "dayjs";
 
@@ -73,7 +70,7 @@ const addSpace = (idx: number, currentMessage: MessageType) => {
 
   const isSameAuthor = nextMessage.author._id === currentMessage.author._id;
   const isSentAfter30Minutes = dayjs(nextMessage.createdAt).isBefore(
-    dayjs(currentMessage.createdAt).subtract(30, "minutes"),
+    dayjs(currentMessage.createdAt).subtract(30, "minutes")
   );
 
   return !isSameAuthor || isSentAfter30Minutes;
@@ -85,7 +82,7 @@ const fetchMessages = async () => {
   messagesFetching.value = true;
   try {
     messages.value = await messagesStore.getMessages(
-      route.params.channelID as string,
+      route.params.channelID as string
     );
   } catch (e) {
     console.log(e);

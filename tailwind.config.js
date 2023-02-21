@@ -40,6 +40,7 @@ module.exports = {
       },
       padding: {
         chat: "1rem",
+        "chat-abs": "1.5rem",
       },
       fontSize: {
         "4.5xl": "2.5rem",
@@ -50,6 +51,7 @@ module.exports = {
       gridTemplateRows: {
         "guild-ui": "3rem minmax(0, 1fr)",
         chat: "minmax(0, 1fr) 4.5rem",
+        "message-create": "3rem 2rem",
       },
     },
   },

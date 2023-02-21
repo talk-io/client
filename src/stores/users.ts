@@ -6,7 +6,7 @@ import type { PresenceStatus } from "@/types/enums";
 export const useUsersStore = defineStore("users", () => {
   const users = ref<Map<string, BasicUser>>(new Map());
 
-  const getUser = (userID: string) => users.value.get(userID);
+  const getUser = (userID: string) => users.value.get(userID) as BasicUser;
   const setUser = (user: BasicUser) => {
     users.value.set(user._id, user);
   };
@@ -16,6 +16,7 @@ export const useUsersStore = defineStore("users", () => {
 
   const setUserStatus = (userID: string, status: PresenceStatus) => {
     const member = getUser(userID);
+    console.log({ status });
     if (!member) return;
     member.status = status;
   };

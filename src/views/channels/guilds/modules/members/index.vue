@@ -37,22 +37,19 @@
 </template>
 
 <script lang="ts" setup>
-import type { Guild } from "@/types/auth";
 import { computed } from "vue";
 import { useMembersStore } from "@/stores/members";
 import Member from "@/components/ui/guild/member.vue";
 import VerticalTransition from "@/components/animations/VerticalTransition.vue";
 import { PresenceStatus } from "@/types/enums";
 import MemberGroup from "@/components/ui/guild/MemberGroup.vue";
+import { useRoute } from "vue-router";
 
-const props = defineProps<{
-  guild: Guild;
-}>();
-
+const route = useRoute()
 const membersStore = useMembersStore();
 
 const members = computed(() => {
-  const membrs = membersStore.getMembers(props.guild._id);
+  const membrs = membersStore.getMembers(route.params.guildID as string);
 
   const online = membrs.filter((m) => m.status === PresenceStatus.Online);
   const offline = membrs.filter(
