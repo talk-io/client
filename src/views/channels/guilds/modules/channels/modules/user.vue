@@ -10,7 +10,7 @@
         icon="mdi:face-man-profile"
       />
       <span class="font-semibold h-5 -mb-0.5 text-ellipsis overflow-hidden whitespace-nowrap select-none">
-        {{user.username}}
+        {{ user.username }}
       </span>
       <span
         class="text-sm text-header-secondary -mt-2 text-ellipsis overflow-hidden whitespace-nowrap select-none"
@@ -19,7 +19,9 @@
       </span>
     </div>
     <div class="flex justify-around items-center h-4/6 w-5/12">
-      <VoiceIcons icon="material-symbols:mic-rounded" />
+      <Tooltip class="w-full" content="Mute">
+        <VoiceIcons icon="material-symbols:mic-rounded" />
+      </Tooltip>
       <VoiceIcons icon="ic:round-headphones" />
       <VoiceIcons icon="mdi:gear" />
     </div>
@@ -29,6 +31,7 @@
 import { Icon as Iconify } from "@iconify/vue";
 import VoiceIcons from "@/components/ui/VoiceIcons.vue";
 import { useAuthStore } from "@/stores/auth";
+import Tooltip from "@/components/ui/Tooltip.vue";
 
 const authStore = useAuthStore();
 
