@@ -1,5 +1,5 @@
 <template>
-  <ACard class="w-96">
+  <ACard>
     <template #title>
       <h1 class="text-xl font-logo font-semibold">talkio.</h1>
       <h2 class="text-3xl font-medium">Sign In</h2>
@@ -74,7 +74,6 @@ const {
   loading,
 
   submitForm,
-  errors,
 } = useForm({
   rules: computed<ValidationArgs>(() => ({
     email: {
@@ -96,7 +95,6 @@ const router = useRouter();
 
 const login = async () => {
   try {
-    console.log({wee: v$.value});
     const response = await submitForm<Partial<LoginResponse>>();
     if (!response) return;
 

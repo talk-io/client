@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full h-screen relative">
+  <div class="flex w-full h-screen relative  overflow-y-hidden">
     <NavigationBar />
     <GuildLayout />
   </div>

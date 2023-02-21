@@ -15,8 +15,8 @@ export const useForm = <T>({
 }) => {
   const loading = ref(false);
   const record = ref(model ?? {});
-  const v$ = useVuelidate(rules, record);
-  const errors = ref<{ [x: string]: string }>();
+  const errors = ref<{ [x: string]: string }>({});
+  const v$ = useVuelidate(rules, record, { $externalResults: errors.value });
 
   const submitForm = async <T>() => {
     try {
@@ -29,6 +29,9 @@ export const useForm = <T>({
       return res;
     } catch (e) {
       errors.value = e as { [x: string]: string };
+      Object.entries(errors.value).forEach(([key, value]) => {
+        v$.value[key].$errors.push({ $message: value });
+      });
     } finally {
       loading.value = false;
     }

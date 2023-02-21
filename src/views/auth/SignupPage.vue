@@ -1,11 +1,11 @@
 <template>
-  <ACard class="w-96">
+  <ACard>
     <template #title>
       <h1 class="text-xl font-logo font-semibold">talkio.</h1>
       <h2 class="text-3xl font-medium">Sign Up</h2>
       <span class="text-header-description">Let's get you on board!</span>
     </template>
-    <form class="flex flex-col gap-5 w-full">
+    <form class="grid grid-cols-2 gap-5 w-full">
       <FormItem
         v-model="record.email"
         :disabled="loading"
@@ -33,7 +33,7 @@
         htmlType="password"
         label="Confirm Password"
       />
-      <div class="flex gap-2">
+      <div class="flex col-span-2 gap-2">
         <AButton
           :disabled="loading"
           class="w-2/6 bg-card py-2 rounded-md hover:brightness-125 transition-all"
