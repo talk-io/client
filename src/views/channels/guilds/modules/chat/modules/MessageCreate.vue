@@ -9,7 +9,9 @@
     }"
       class="grid grid-cols-[3rem_1fr_3rem] w-full backdrop-blur-xl grid-rows-[3rem] place-items-center bg-message-create-back rounded-md drop-shadow-2xl"
     >
-      <Icon class="!text-2xl" icon="ep:circle-plus-filled" />
+      <Tooltip content="Upload a File" placement="top">
+        <Icon class="!text-2xl" icon="ep:circle-plus-filled" />
+      </Tooltip>
       <div class="flex w-full">
         <input
           v-model="message"
@@ -42,6 +44,7 @@ import { computed, ref } from "vue";
 import { useMessagesStore } from "@/stores/messages";
 import { useChannelsStore } from "@/stores/channels";
 import UserTyping from "@/views/channels/guilds/modules/chat/modules/UserTyping.vue";
+import Tooltip from "@/components/ui/Tooltip.vue";
 
 const props = defineProps<{
   channel: ChannelType;

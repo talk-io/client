@@ -51,7 +51,7 @@ const membersStore = useMembersStore();
 const members = computed(() => {
   const membrs = membersStore.getMembers(route.params.guildID as string);
 
-  const online = membrs.filter((m) => m.status === PresenceStatus.Online);
+  const online = membrs.filter((m) => m.status !== PresenceStatus.Offline);
   const offline = membrs.filter(
     (m) =>
       m.status === PresenceStatus.Offline ||

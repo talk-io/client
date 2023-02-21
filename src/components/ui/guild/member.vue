@@ -6,19 +6,21 @@
       class="text-4.5xl text-header-secondary"
       icon="mdi:face-man-profile"
     />
-    <div
-      class="absolute flex items-center justify-center h-5 w-5 bg-secondary bottom-0 left-1.5 rounded-full"
-    >
       <div
-        :class="{
+        class=" flex absolute bottom-0 left-1.5 items-center justify-center h-5 w-5 bg-secondary rounded-full"
+      >
+        <Tooltip :content="status[user.status]" placement="top">
+        <div
+          :class="{
           'bg-online': user.status === 'online',
           'bg-offline': user.status === 'offline',
           'bg-idle': user.status === 'idle',
           'bg-dnd': user.status === 'dnd',
         }"
-        class="h-3 w-3 rounded-full"
-      />
-    </div>
+          class="h-2.5 w-2.5 rounded-full"
+        />
+        </Tooltip>
+      </div>
     <span class="font-medium text-lg select-none">
       {{ user.username }}
     </span>
@@ -28,8 +30,16 @@
 <script lang="ts" setup>
 import type { BasicUser } from "@/types/auth";
 import { Icon } from "@iconify/vue";
+import Tooltip from "@/components/ui/Tooltip.vue";
 
 defineProps<{
   user: BasicUser;
 }>();
+
+const status = {
+  online: "Online",
+  offline: "Offline",
+  idle: "Idle",
+  dnd: "Do Not Disturb",
+};
 </script>

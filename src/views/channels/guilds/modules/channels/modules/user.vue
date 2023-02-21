@@ -19,11 +19,15 @@
       </span>
     </div>
     <div class="flex justify-around items-center h-4/6 w-5/12">
-      <Tooltip class="w-full" content="Mute">
+      <Tooltip class="w-full px-0.5" content="Mute" placement="top">
         <VoiceIcons icon="material-symbols:mic-rounded" />
       </Tooltip>
+      <Tooltip class="w-full px-0.5" content="Defean" placement="top">
       <VoiceIcons icon="ic:round-headphones" />
-      <VoiceIcons icon="mdi:gear" />
+      </Tooltip>
+      <Tooltip class="w-full px-0.5" content="Settings" placement="top">
+        <VoiceIcons icon="mdi:gear" />
+      </Tooltip>
     </div>
   </div>
 </template>

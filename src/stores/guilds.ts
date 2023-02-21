@@ -13,7 +13,9 @@ export const useGuildStore = defineStore("guilds", () => {
   const membersStore = useMembersStore();
   const usersStore = useUsersStore();
 
-  const getGuilds = computed(() => Array.from(state.value.values() || []));
+  const getGuilds = computed<Array<Guild>>(() =>
+    Array.from(state.value.values() || []),
+  );
   const getGuild = (guildID: string) => state.value.get(guildID);
   const getLastVisitedChannel = (guildID: string) => {
     const guildChannels = channelsStore.getChannels(guildID);
